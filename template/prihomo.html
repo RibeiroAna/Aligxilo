@@ -1,0 +1,150 @@
+<h2 class="col-md-12" data-ng-init="init()">Pri vi...</h2>
+
+<a href="" ng-click="ensaluti = true" class="col-md-12">  Malfermi la ensalutilon</a>
+<div class="ensaluti" ng-show="ensaluti" ng-init="ensaluti = true">
+  <a href="" ng-click="ensaluti = false">Fermi [X]</a>
+  <p>Ĉu vi jam havas registron en UEA? Provu ensaluti anstataŭ replenumi la formularon</p>
+  <form class="form">
+    <div class="form-group">
+      <label>Retadreso</label>
+      <input type="email" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Pasvorto</label>
+      <input type="password" class="form-control">
+    </div>
+    <button id="submit" type="submit" class="btn btn-primary">Ensaluti</button>
+    <a href="">[Mi forgesis mian pasvorton]</a>
+  </form>
+</div>
+
+<br><br>
+<form>
+  <div class="form-group col-md-5">
+    <label> Via personnomo(j)*</label>
+    <input type="text" class="form-control">
+  </div>
+
+  <div class="form-group col-md-7">
+    <label> Via familinomo(j)*</label>
+    <input type="text" class="form-control">
+  </div>
+
+  <div class="form-group col-md-6">
+    <label for="gxenro">Ĝenro</label>
+    <select class="form-control">
+      <option>Ina</option>
+      <option>Vira</option>
+      <option>Alia</option>
+    </select>
+  </div>
+
+  <div class="form-group col-md-6">
+    <label for="jaro">titolo*</label>
+    <select class="form-control" ng-model="titolo">
+      <option value="S-ro">S-ro</option>
+      <option value="S-rino">S-rino</option>
+      <option value="D-ro">D-ro</option>
+      <option value="D-ro">D-rino</option>
+      <option value="Profesoro">Profesoro</option>
+      <option value="Profesorino">Profesorino</option>
+      <option value="Alia">Alia (ne aplikebla)</option>
+    </select>
+  </div>
+
+  <div class="form-group col-md-12">
+  <label class="col-md-3">Naskiĝidato:</label>
+  <div class="col-md-3">
+    <label for="tago">Naskiĝtago*</label>
+    <select class="form-control" ng-model="tago">
+      <option value="{{1 + n}}"
+              ng-repeat="n in tagoj">{{1 + n}}
+      </option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label for="monato">Naskiĝmonato*</label>
+    <select class="form-control" ng-model="monato">
+      <option value="{{1 + n}}"
+              ng-repeat="n in monatoj">{{1 + n}}
+      </option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label for="jaro">Naskiĝjaro*</label>
+    <select class="form-control"
+            ng-model="naskigxjaro">
+      <option value="{{1900 + n}}"
+              ng-repeat="n in jaroj">{{1900 + n}}
+      </option>
+    </select>
+  </div>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label>Poŝtelefono</label>
+    <input type="telephone" class="form-control">
+  </div>
+
+  <div class="form-group col-md-4">
+    <label>Hejmtelefono</label>
+    <input type="telephone" class="form-control">
+  </div>
+
+  <div class="form-group col-md-4">
+    <label>Labortelefono</label>
+    <input type="telephone" class="form-control">
+  </div>
+
+  <div class="form-group col-md-12">
+    <label for="adreso">Strata adreso
+                        (skribu en via loka lingvo):</label>
+    <textarea class="form-control" rows="5" id="adreso"></textarea>
+    <p>Ĝi estas bezonata por fari fakturojn kaj por eventuale sendi
+      aferojn, kaze vi mendos kelkajn el niaj revuoj kaj eldonaĵoj.</p>
+  </div>
+
+  <div class="form-group col-md-6">
+    <label>Loĝurbo</label>
+    <input type="text" class="form-control">
+    (En loka lingvo)
+  </div>
+
+  <div class="form-group col-md-6">
+    <label>Loĝlando</label>
+    <select class="form-control"
+            ng-model="uzanto.lando"
+            ng-options="(l.radikoEo + l.finajxoEo) for l in landoj | orderBy:'radikoEo'">
+    </select>
+  </div>
+
+  <h2 class="col-md-12">Por aliri al via reta membrspaco</h2>
+
+  <div class="col-md-5">
+    <label for="uzantnomo"> Via retpoŝtadreso*</label>
+    <input type="email" id="uzantnomo" class="form-control">
+    <p>Ĝi ne povas ekzisti en nia sistemo</p>
+  </div>
+
+  <div class="form-group col-md-3">
+    <label for="pasvorto"> Via pasvorto*</label>
+    <input type="password"
+           id="pasvorto"
+           class="form-control">
+    <p>Kune via retpoŝto, ĝi utilos por ensaluti en membrspaco</p>
+  </div>
+
+  <div class="form-group col-md-3">
+    <label for="pasvorto"> Retajpu la pasvorton*</label>
+    <input type="password" id="pasvorto" class="form-control">
+    <p>Ĝi devas esti egala al la antaŭa</p>
+  </div>
+
+  <div class="form-group text-center">
+      <a ui-sref="form.work" class="btn btn-success btn-outline-rounded btn-info">
+        Onta ero
+      <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span></a>
+  </div>
+</form>

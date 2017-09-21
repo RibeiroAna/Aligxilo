@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="board">
+        <!-- Circular Tab Area -->
+        <div id="status-buttons">
+            <h1 class="titolo">
+              <img src="content/img/logoo.png" class="logoo" alt="logoo" height="50" width="50"></img>
+              Universala Esperanto-Asocio -
+              <b>
+                Aliĝilo
+              </b>
+            </h1>
+            <ul class="nav nav-tabs" id="myTab">
+                <div class="liner"></div>
+                <li>
+                    <a ui-sref-active="active" ui-sref=".prihomo"
+                       data-toggle="tab" title="prihomo">
+                        <span class="round-tabs">
+                          <i class="fa fa-user" aria-hidden="true"></i>
+                          <p class="round-tabs">Pri vi</p>
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a ui-sref-active="active" ui-sref=".work"
+                       data-toggle="tab" title="work">
+                        <span class="round-tabs">
+                            <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+                          <p class="round-tabs">Membreco</p>
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a ui-sref-active="active" ui-sref=".address"
+                       data-toggle="tab" title="address">
+                        <span class="round-tabs">
+                          <i class="fa fa-eur" aria-hidden="true"></i>
+                          <p class="round-tabs">Donacoj</p>
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a ui-sref-active="active" ui-sref=".result"
+                       data-toggle="tab" title="result">
+                        <span class="round-tabs">
+                            <i class="glyphicon glyphicon-ok"></i>
+                            <p class="round-tabs">Plusendi</p>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>

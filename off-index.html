@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="eo">
+<head>
+    <meta charset="utf-8" />
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Aliĝilo</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="off-dev/bootstrap.min.css"/>
+	  <link rel="stylesheet" href="off-dev/font-awesome.css"/>
+    <!--font montserrat-->
+    <link rel="stylesheet" href="off-dev/montserrat.css"/>
+
+    <link rel="stylesheet" href="content/css/stilo.css"/>
+</head>
+
+<body ng-app="formularoj">
+
+    <!-- Vendor js libraries -->
+    <script src="off-dev/angular.min.js"></script>
+    <script src="off-dev/angular-ui-router.min.js"></script>
+
+    <!-- Bootstrapping -->
+    <script src="app.js"></script>
+
+    <!--Controllers-->
+    <script src="controller/formCtrl.js"></script>
+    <script src="controller/prihomoCtrl.js"></script>
+
+    <!--config-->
+    <script src="config.js"></script>
+
+    <!-- views will be injected here -->
+    <section style="background:#efefe9;">
+      <div class="container">
+        <div ui-view></div>
+      </div>
+    </section>
+  </body>
+</html>

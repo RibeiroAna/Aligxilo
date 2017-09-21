@@ -5,16 +5,15 @@ var app = angular.module('wizardApp', ['ui.router'])
 app.config(['$stateProvider', '$urlRouterProvider',
 
     function($stateProvider, $urlRouterProvider) {
-
-        // For any unmatched url, redirect to /wizard/personal
         $urlRouterProvider.otherwise('/form/personal');
 
         $stateProvider
             // PARENT STATE: form state
             .state('form', {
                 url: '/form',
-                component: 'formComponent'
-            })
+                templateUrl:  'template/form.htm',
+                controller: 'formCtrl'
+              })
 
             // NESTED STATES: child states of 'form' state
             // URL will become '/form/personal'
