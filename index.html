@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="wizardApp">
+<head>
+    <meta charset="utf-8" />
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Multi-Step Wizard using AngularJS 1.5+ And UI-Router 1.0 by Cathy Wun</title>
+
+    <!-- CSS Files -->
+    <link rel="icon" type="image/png" href="content/images/favicon.ico" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" />
+    <!--font montserrat-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400"/>
+
+    <link rel="stylesheet" href="content/css/riliwan-rabo.css" />
+    <link rel="stylesheet" href="content/css/style.css" />
+
+</head>
+<body>
+
+    <!-- views will be injected here -->
+    <section style="background:#efefe9;">
+        <div class="container">
+            <div ui-view></div>
+        </div>
+    </section>
+
+    <!-- Vendor js libraries -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
+
+    <!-- Bootstrapping -->
+    <script src="app/app.module.js"></script>
+
+    <!-- Wizard - Form feature -->
+    <script src="app/form/form.component.js"></script>
+    <script src="app/form/form.controller.js"></script>
+    <script src="app/form/formData.value.js"></script>
+
+    <!-- Wizard - Personal feature -->
+    <script src="app/personal/personal.component.js"></script>
+    <script src="app/personal/personal.controller.js"></script>
+
+    <!-- Wizard - Work feature -->
+    <script src="app/work/work.component.js"></script>
+    <script src="app/work/work.controller.js"></script>
+
+    <!-- Wizard - Address feature -->
+    <script src="app/address/address.component.js"></script>
+    <script src="app/address/address.controller.js"></script>
+
+    <!-- Wizard - Result feature -->
+    <script src="app/result/result.component.js"></script>
+    <script src="app/result/result.controller.js"></script>
+
+</body>
+</html>
