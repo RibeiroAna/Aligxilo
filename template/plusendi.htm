@@ -1,0 +1,13 @@
+<h3>Resumo de viaj mendoj</h3>
+<ul>
+  <li>Baza membreco: <b>{{entutoKotizo * jaroj}}</b> {{monero}}</li>
+  <li>Servoj, kiuj ne estas en baza membreco: <b>{{entutoKrom * jaroj}}</b> {{monero}}</li>
+  <li ng-repeat="fondajxo in fondajxoj" ng-if="fondajxo.donaco != 0">
+    Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{monero}}</li>
+  </li>
+  <li><h4>Entuto: {{(entutoKotizo + entutoKrom) * jaroj + entutoDonaco}} {{monero}}</h4></li>
+</ul>
+
+<h3>
+  Pagmaniero:
+</h3>

@@ -1,0 +1,41 @@
+<h2 class="col-md-12">Konsideru donaci al kelkaj UEA-fondaĵoj</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <td><h4><b>Nomo de la fondaĵo</b></h4></td>
+        <td><h4><b>Priskribo de la fondaĵo</b></h4></td>
+        <td>
+            <h4><b>Kvanto donaconta</b></h4>
+            ĉiuj valoroj estas en {{monero}}
+        </td>
+      </tr>
+    </thead>
+    <tr ng-repeat="f in fondajxoj">
+      <td><h4>{{f.nomo}}</h4></td>
+      <td>{{f.priskribo}}</td>
+      <td>
+        <input type="number"
+               min="0"
+               ng-step="any"
+               class="form-control col-md-1"
+               ng-model="f.donaco"
+               ng-change="updateEntuto()">
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><h3>Entuto por donacoj:</h3></td>
+      <td><h3>{{entuto || 0}} {{monero}}</h3></td>
+    </tr>
+  </table>
+
+  <div class="form-group text-center">
+    <a ui-sref="form.membrigxi" class="btn btn-outline-rounded btn-default">
+      <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span>
+      Antaŭa
+    </a>
+    <a ui-sref="form.plusendi" class="btn btn-outline-rounded btn-default"> Venonta
+      <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span>
+    </a>
+  </div>

@@ -1,0 +1,81 @@
+  <div class="form-group col-md-12" data-ng-init="init()">
+    <label for="gxis">Vi membriĝas (<a href="#!/form/membrigxi#1">1</a>) ĝis la fino de... *</label>
+        <label class="radio-inline">
+          <input type="radio" name="jaroj" ng-model="jaroj" ng-value="1" ng-change="updateJaroj()">
+          {{jaro}} (por 1 jaro)
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="jaroj" ng-value="2"  ng-change="updateJaroj()">
+          {{jaro + 1}} (por 2 jaroj)
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="jaroj" ng-value="5"  ng-change="updateJaroj()">
+          {{jaro + 5}} (por 5 jaroj)
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="jaroj" ng-value="25"  ng-change="updateJaroj()">
+           Dumvive
+        </label>
+  </div>
+
+  <div class="kotizo">
+    <h4>Sugestita kotizo:</h4>
+    <h1>
+      {{ (jaroj * (kotizo.prezo))}}
+      {{(kotizo.monero)}}
+    </h1>
+    <a href=""
+        editable-number="kotizo.prezo"
+        e-step="any">Redakti bazan kotizon*</a>
+        (<a href="#!/form/membrigxi#2">2</a>)
+    <p>La sumo egalas al {{jaroj}} x {{kotizo.prezo}} (baza kotizoj)</p>
+  </div>
+
+  <div class="form-group col-md-12">
+  <!--La membrectipoj venos el ‘GET - https://api-adreso/grupoj/membrecoj/aldonaj’ -->
+  <h4 for="krome"><b>Krom la baza membrenco, vi povas havi...</b></h4>
+  <p>Vi havos tion proporcie al la tempo al kiu vi aliĝas</p>
+  <div class="checkbox"
+       ng-repeat="krom in krommembrecoj">
+      <label>
+        <input type="checkbox"
+               ng-model="krommem[$index]"
+               ng-change="updateEntuto($index)">
+        <b>{{krom.nomo}}:</b> {{krom.priskribo}}
+        <b>prezo:</b>
+        {{jaroj * prezo[$index].prezo}}
+        {{monero}}
+      </label>
+    </div>
+    <h4>
+      Entuta valoro por membriĝi plus servoj:
+      {{(kotizo.prezo + entuto) * jaroj ||
+      "Elektu landon"}} {{monero}}
+    </h4>
+
+  </div>
+
+  <div class="form-group text-center">
+      <a ui-sref="form.prihomo" class="btn btn-outline-rounded btn-default">
+        <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span>
+        Antaŭa
+      </a>
+      <a ui-sref="form.donaci" class="btn btn-outline-rounded btn-default"> Venonta
+        <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span>
+      </a>
+  </div>
+
+  <p class="noto">
+    NOTOJ:
+    <p id="1">
+      1) La baza membreco donas la rajton ricevi rabaton en la Universala Kongreso kaj en la libroservo,
+      la rajto voĉdoni, kaj se vi aliros la retan membrspacon, ankaŭ ricevi
+      retan version de Revuo Esperanto, Revuo Kontakto kaj Jarlibro
+    </p>
+
+    <p id="2">
+      2) La redaktado de la baza kotizo okazas en du kazoj, se vi ne povas pagi tiom multe, vi povas
+      peti por pagi malpli (ĝis 30% malpli, la akcepto estas aŭtomata). Se vi povas pagi pli,
+      vi povas indiki tion enmetante pli grandan sumon.
+    </p>
+  </p>
