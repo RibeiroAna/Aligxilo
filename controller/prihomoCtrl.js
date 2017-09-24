@@ -2,6 +2,7 @@ app.controller("prihomoCtrl", function ($scope, $rootScope,
                                       $window, $http, config) {
 
     $scope.init = function() {
+      $window.scrollTo(0, 0);
       $scope.uzanto = {};
 
       $http.get(config.api_url + "/landoj").then(function(response) {

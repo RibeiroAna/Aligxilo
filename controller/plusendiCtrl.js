@@ -2,6 +2,7 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
                                       $window, $http, config) {
 
   $scope.init = function() {
+    $window.scrollTo(0, 0);
     if(!$rootScope.uzanto) {
       $window.location.href = '#!/form/prihomo';
     }
