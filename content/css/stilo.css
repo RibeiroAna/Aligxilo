@@ -108,8 +108,8 @@ body {
 }
 
 .board {
-    width: 75%;
-    margin: 60px auto;
+    width: 100%;
+    margin: 0px auto;
     height: auto;
     background: #fff;
     /*box-shadow: 10px 10px #ccc,-10px 20px #ddd;*/

@@ -1,6 +1,7 @@
 app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, config) {
 
   $scope.init = function () {
+    $window.scrollTo(0, 0);
     $scope.jaro = (new Date()).getFullYear();
     $scope.entuto = 0;
 
