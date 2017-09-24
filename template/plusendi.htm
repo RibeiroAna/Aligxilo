@@ -1,13 +1,184 @@
-<h3>Resumo de viaj mendoj</h3>
+<h3 data-ng-init="init()" class="col-md-12">Resumo de viaj mendoj</h3>
 <ul>
   <li>Baza membreco: <b>{{entutoKotizo * jaroj}}</b> {{monero}}</li>
-  <li>Servoj, kiuj ne estas en baza membreco: <b>{{entutoKrom * jaroj}}</b> {{monero}}</li>
+  <li ng-if="entutoKrom && entutoKrom != 0">Servoj, kiuj ne estas en baza membreco: <b>{{entutoKrom * jaroj}}</b> {{monero}}</li>
   <li ng-repeat="fondajxo in fondajxoj" ng-if="fondajxo.donaco != 0">
     Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{monero}}</li>
   </li>
   <li><h4>Entuto: {{(entutoKotizo + entutoKrom) * jaroj + entutoDonaco}} {{monero}}</h4></li>
 </ul>
 
-<h3>
+<h3 class="col-md-12">
   Pagmaniero:
 </h3>
+<form>
+  <div class="col-md-12">
+    <label>
+      <input type="radio"
+             ng-model="pago"
+             ng-value="'ueakonto'"
+             name="pagmaniero">
+       UEA-konto
+      <label ng-show="pago == 'ueakonto'">
+        (Tajpu la UEA-kodo de la konto el kiu vi ŝatus fari la ĝiron.
+         ni kontaktos la posedanton de la konto,
+         kaze ne estas vi, por scii ĉu vi rajtas fari tiun ĝiron)
+         <input type="text" class="form-control">
+     </label>
+    </label>
+  </div>
+
+  <div class="col-md-12">
+    <label>
+      <input type="radio"
+              ng-model="pago"
+              ng-value="'kreditkarto'"
+              name="pagmaniero">
+
+      <i class="fa fa-credit-card" aria-hidden="true"></i>
+      Kreditkarto
+      <div ng-show="pago == 'kreditkarto'">
+        <label class="col-md-4">
+         <input type="radio" value="" name="kreditkarto">
+         <i class="fa fa-cc-amex fa-lg" aria-hidden="true"></i>
+         American Express
+       </label>
+
+       <label class="col-md-4">
+         <input type="radio" value="" name="kreditkarto">
+         <i class="fa fa-cc-mastercard fa-lg" aria-hidden="true"></i>
+         Mastercard/ Eurocard/ Access
+       </label>
+
+       <label class="col-md-4">
+         <input type="radio" value="" name="kreditkarto">
+         <i class="fa fa-cc-visa fa-lg" aria-hidden="true"></i>
+         Visa/ Carte Bleue
+       </label>
+
+       <label for="nomo" class="col-md-12">
+         Nomo kiel en la kreditkarto:
+         <input type="text" class="form-control">
+       </label>
+       <label for="numero" class="col-md-8">
+         Numero: <input type="number" class="form-control">
+       </label>
+
+       <label for="numero" class="col-md-4">
+         Kontrolnumero (en la kartdorso):
+         <input type="number" class="form-control">
+       </label>
+       <label class="form-group col-md-2">
+         <label for="monato">Valida ĝis:</label>
+       </label>
+     </div>
+    </label>
+  </div>
+
+  <div class="col-md-12">
+    <label>
+      <input type="radio"
+             ng-model="pago"
+             ng-value="'banko'"
+             name="pagmaniero" >
+      <i class="fa fa-university" aria-hidden="true"></i>
+      Bankĝiro
+    </label>
+    <select class="form-control" ng-show="pago == 'banko'">
+      <option></option>
+      <option> ABN-Amro Bank, Postbus 949, NL-3000 DD Rotterdam (IBAN: NL66 ABNA 0426 0515 99, BIC/SWIFT: ABNANL2A)</option>
+      <option>	ING Bank, Postbus 1800, NL-1000 BV Amsterdam (IBAN: NL72 INGB 0000 3789 64, BIC/SWIFT: INGBNL2A) </option>
+    </select>
+  </div>
+
+  <div class="col-md-12">
+    <label>
+      <input type="radio"
+             ng-model="pago"
+             ng-value="'posxtbanko'"
+             name="pagmaniero">
+      <i class="fa fa-university" aria-hidden="true"></i>
+      Poŝtbanko
+      ← Ĉiuj kontoj estas nome de Universala Esperanto-Asocio, Rotterdam
+    </label>
+    <select class="form-control"
+            ng-show="pago == 'posxtbanko'">
+      <option></option>
+      <option><b>Belgio:</b> IBAN: BE54 0001 6318 3197, BIC: BPOTBEB1XXX </option>
+      <option><b>Germanio:</b> IBAN: DE51 3701 0050 0318 2915 09, BIC: PBNKDEFF </option>
+      <option><b>Svedio:</b> IBAN: SE95 9500 0099 6042 0074 3740, BIC: NDEASESS</option>
+      <option><b>Svislando:</b> IBAN: CH86 0900 0000 1200 2310 0 BIC: POFICHBEXXX</option>
+    </select>
+  </div>
+
+  <div class="col-md-12">
+    <label>
+      <input type="radio"
+             ng-model="pago"
+             ng-value="'paypal'"
+             name="pagmaniero">
+      <i class="fa fa-paypal" aria-hidden="true"></i>
+      PayPal, interreta pagsistemo, por financoj@co.uea.org.
+    </label>
+  </div>
+
+  <div class="col-md-12">
+    <label>
+      <input type="radio"
+             ng-model="pago"
+             ng-value="'cxeko'"
+             name="pagmaniero">
+      <i class="fa fa-money" aria-hidden="true"></i>
+      Ĉeko favore de UEA
+    </label>
+  </div>
+
+  <!--tio venas el   GET - /Perantoj-->
+  <div class="col-md-12">
+   <label>
+      <input type="radio"
+              name="pagmaniero"
+              ng-model="pago"
+              ng-value="'peranto'">
+       <i class="fa fa-address-card" aria-hidden="true"></i>
+       Peranto
+    </label>
+   <select class="form-control"
+           ng-model="krominformo"
+           ng-show="pago =='peranto'"
+           ng-options="(peranto.publikaNomo) for peranto in perantoj">
+    </select>
+  </div>
+
+  <div class="col-md-12">
+    <label>
+      <input type="radio"
+              ng-value="'ne aplikebla'"
+              ng-model="pago"
+              name="pagmaniero" >
+      <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+      Ne aplikebla (vi kandidatiĝas por subvencio aŭ alia antaŭe interkonsentita kazo)
+    </label>
+  </div>
+
+  <div class="checkbox col-md-12">
+    <label>
+      <input type="checkbox" required>
+      Mi konsentas kun la
+      <a href="" onclick="window.alert('Ne preta')">
+         privatecpolitiko
+       </a>
+        de UEA kaj TEJO
+    </label>
+  </div>
+
+  <div class="form-group text-center">
+    <button submit type="submit"
+            class="btn btn-outline-rounded btn-default"
+            ng-click="plusendi()">
+        Plusendi al la CO
+      <span style="margin-left:10px;"
+            class="glyphicon glyphicon-arrow-right"></span></a>
+    </button>
+  </div>
+</form>

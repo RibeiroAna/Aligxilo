@@ -1,6 +1,7 @@
  app.controller("donaciCtrl", function ($scope, $rootScope) {
 
    $scope.updateEntuto = function () {
+     
      $scope.entuto = 0;
      for(var i = 0; i < $scope.fondajxoj.length; i++) {
        $scope.entuto += $scope.fondajxoj[i].donaco;

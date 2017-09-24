@@ -25,8 +25,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
             })
             .state("form.plusendi", {
                 url: "/plusendi",
-                templateUrl: "template/plusendi.htm"
-                //controller: "plusendiCtrl"
+                templateUrl: "template/plusendi.htm",
+                controller: "plusendiCtrl"
             })
     });
 

@@ -4,6 +4,10 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
     $scope.jaro = (new Date()).getFullYear();
     $scope.entuto = 0;
 
+    if(!$rootScope.uzanto) {
+      $window.location.href = '#!/form/prihomo';
+    }
+
     if(!$rootScope.jaroj) {
       $scope.jaroj = 1;
       $rootScope.jaroj = 1;
