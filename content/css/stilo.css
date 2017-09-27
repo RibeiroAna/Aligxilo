@@ -4,7 +4,7 @@ body {
 
 .titolo {
   padding-top: 15px;
-  padding-left: 25%;
+  padding-left: 30%;
   position: relative;
   font-size: 20px;
   color:black;
@@ -224,6 +224,10 @@ p.round-tabs {
 }
 
 @media( max-width : 490px ){
+
+.titolo {
+  padding-left: 10%;
+}
 
 .board {
   width: 90%;

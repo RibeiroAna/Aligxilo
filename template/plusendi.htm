@@ -1,9 +1,12 @@
 <h3 data-ng-init="init()" class="col-md-12">Resumo de viaj mendoj</h3>
+  {{uzanto}}
 <ul>
   <li>Baza membreco: <b>{{entutoKotizo * jaroj}}</b> {{monero}}</li>
-  <li ng-if="entutoKrom && entutoKrom != 0">Servoj, kiuj ne estas en baza membreco: <b>{{entutoKrom * jaroj}}</b> {{monero}}</li>
+  <li ng-repeat="k in krommembrecoj" ng-if="krommem[$index]">
+    {{k.nomo}}: <b>{{prezo[$index].prezo}}</b> {{monero}}
+  </li>
   <li ng-repeat="fondajxo in fondajxoj" ng-if="fondajxo.donaco != 0">
-    Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{monero}}</li>
+    Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{monero}}
   </li>
   <li><h4>Entuto: {{(entutoKotizo + entutoKrom) * jaroj + entutoDonaco}} {{monero}}</h4></li>
 </ul>
@@ -37,7 +40,7 @@
 
       <i class="fa fa-credit-card" aria-hidden="true"></i>
       Kreditkarto
-      <div ng-show="pago == 'kreditkarto'">
+      <div ng-show="pago == 'kreditkarto'" class="kreditkarto">
         <label class="col-md-4">
          <input type="radio" value="" name="kreditkarto">
          <i class="fa fa-cc-amex fa-lg" aria-hidden="true"></i>
@@ -55,22 +58,31 @@
          <i class="fa fa-cc-visa fa-lg" aria-hidden="true"></i>
          Visa/ Carte Bleue
        </label>
-
-       <label for="nomo" class="col-md-12">
-         Nomo kiel en la kreditkarto:
-         <input type="text" class="form-control">
-       </label>
-       <label for="numero" class="col-md-8">
-         Numero: <input type="number" class="form-control">
-       </label>
-
-       <label for="numero" class="col-md-4">
-         Kontrolnumero (en la kartdorso):
-         <input type="number" class="form-control">
-       </label>
-       <label class="form-group col-md-2">
-         <label for="monato">Valida ĝis:</label>
-       </label>
+        <div class="form-group col-md-12">
+          <label for="nomo">Nomo kiel en la kreditkarto:</label>
+          <input type="text" class="form-control" id="nomo">
+        </div>
+        <div class="form-group col-md-12">
+          <label for="numero">Kreditkarta numero:</label>
+          <input type="number" class="form-control" id="numero">
+        </div>
+        <div class="form-group col-md-6">
+         <label for="numero">
+           Kontrolnumero (en la kartdorso):
+           <input type="number" class="form-control" maxlength="4">
+         </label>
+       </div>
+       <div class="form-group col-md-6">
+         <label for="validdato">Valida ĝis:</label>
+         <input
+              id="validdato"
+              type="text"
+              class="form-control"
+              ng-model="vouDecidir"
+              placeholder="MM/JJ"
+              ui-mask="99/99"
+              ui-mask-placeholder>
+       </div>
      </div>
     </label>
   </div>
@@ -173,12 +185,16 @@
   </div>
 
   <div class="form-group text-center">
+    <a ui-sref="form.donaci" class="btn btn-outline-rounded btn-default">
+      <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span>
+      Antaŭa
+    </a>
     <button submit type="submit"
             class="btn btn-outline-rounded btn-default"
             ng-click="plusendi()">
         Plusendi al la CO
       <span style="margin-left:10px;"
-            class="glyphicon glyphicon-arrow-right"></span></a>
+            class="fa fa-check"></span></a>
     </button>
   </div>
 </form>

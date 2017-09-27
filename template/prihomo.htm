@@ -20,90 +20,89 @@
 
 <br><br>
 <form name="prihomo">
-  <div class="form-group col-md-5">
-    <label> Via personnomo(j)*</label>
-    <input type="text" class="form-control" ng-model="uzanto.personanomo" required>
-  </div>
+    <div class="form-group col-md-5">
+      <label> Via(j) personnomo(j)*</label>
+      <input type="text" class="form-control" ng-model="uzanto.personanomo" required>
+    </div>
 
-  <div class="form-group col-md-7">
-    <label> Via familinomo(j)*</label>
-    <input type="text" class="form-control" ng-model="uzanto.familianomo" required>
-  </div>
+    <div class="form-group col-md-7">
+      <label> Via(j) familinomo(j)*</label>
+      <input type="text" class="form-control" ng-model="uzanto.familianomo" required>
+    </div>
 
-  <div class="form-group col-md-6">
-    <label for="jaro">Titolo</label>
-    <select class="form-control" ng-model="uzanto.titolo">
-      <option value="S-ro">Sinjoro</option>
-      <option value="S-rino">Sinjorino</option>
+    <div class="form-group col-md-6">
+      <label for="jaro">Titolo</label>
+      <select class="form-control" ng-model="uzanto.titolo">
+        <option value="S-ro">Sinjoro</option>
+        <option value="S-rino">Sinjorino</option>
 
-      <option value="D-ro">Doktoro</option>
-      <option value="D-rino">Doktorino</option>
+        <option value="D-ro">Doktoro</option>
+        <option value="D-rino">Doktorino</option>
 
-      <option value="Profesoro">Profesoro</option>
-      <option value="Profesorino">Profesorino</option>
+        <option value="Profesoro">Profesoro</option>
+        <option value="Profesorino">Profesorino</option>
 
-      <option value="Magistro">Magistro</option>
-      <option value="Magistro">Magistrino</option>
+        <option value="Magistro">Magistro</option>
+        <option value="Magistro">Magistrino</option>
 
-      <option value="Pastro">Pastro</option>
-      <option value="Pastrino">Pastrino</option>
-      <option value="Alia">Alia (ne aplikebla)</option>
-    </select>
-  </div>
+        <option value="Pastro">Pastro</option>
+        <option value="Pastrino">Pastrino</option>
+        <option value="Alia">Alia (ne aplikebla)</option>
+      </select>
+    </div>
 
-  <div class="form-group col-md-6">
-    <label>Naskiĝidato* (JJJJ-MM-TT)</label>
-    <input type="text"
-           class="form-control"
-           ng-model="uzanto.naskigxtago"
-           placeholder="JJJJ-MM-TT"
-           ui-mask="9999-99-99" ui-mask-placeholder required>
-  </div>
-</div>
+    <div class="form-group col-md-6">
+      <label>Naskiĝidato* (TT/MM/JJJJ)</label>
+      <input type="text"
+             class="form-control"
+             ng-model="uzanto.naskigxtagoSenFormo"
+             placeholder="TT/MM/JJJJ"
+             ui-mask="99/99/9999" ui-mask-placeholder required>
+    </div>
 
-  <div class="form-group col-md-4">
-    <label>Poŝtelefono</label>
-    <input type="telephone" class="form-control" ng-model="uzanto.telportebla">
-  </div>
+    <div class="form-group col-md-4">
+      <label>Poŝtelefono</label>
+      <input type="telephone" class="form-control" ng-model="uzanto.telportebla">
+    </div>
 
-  <div class="form-group col-md-4">
-    <label>Hejmtelefono</label>
-    <input type="telephone" class="form-control" ng-model="uzanto.telhejmo">
-  </div>
+    <div class="form-group col-md-4">
+      <label>Hejmtelefono</label>
+      <input type="telephone" class="form-control" ng-model="uzanto.telhejmo">
+    </div>
 
-  <div class="form-group col-md-4">
-    <label>Oficeja telefono</label>
-    <input type="telephone" class="form-control" ng-model="uzanto.teloficejo">
-  </div>
+    <div class="form-group col-md-4">
+      <label>Oficeja telefono</label>
+      <input type="telephone" class="form-control" ng-model="uzanto.teloficejo">
+    </div>
 
-  <div class="form-group col-md-12">
-    <label for="adreso">Strata adreso
-                        (skribu en via loka lingvo):</label>
-    <textarea class="form-control" rows="5" id="adreso" ng-model="uzanto.adreso"></textarea>
-    <p>Ĝi estas bezonata por fari fakturojn kaj por eventuale sendi
-      aferojn, kaze vi mendos kelkajn el niaj revuoj kaj eldonaĵoj.</p>
-  </div>
+    <div class="form-group col-md-12">
+      <label for="adreso">Strata adreso kaj urbo*
+                          (skribu en via loka lingvo):</label>
+      <textarea class="form-control" rows="5"
+                id="adreso" ng-model="uzanto.adreso" required></textarea>
+      <p>Ĝi estas bezonata por fari fakturojn kaj por eventuale sendi
+        aferojn, kaze vi mendos kelkajn el niaj revuoj kaj eldonaĵoj.</p>
+    </div>
 
-  <div class="form-group col-md-6">
-    <label>Poŝtkodo</label>
-    <input type="text" class="form-control" ng-model="uzanto.posxtkodo">
-  </div>
+    <div class="form-group col-md-6">
+      <label>Poŝtkodo*</label>
+      <input type="text" class="form-control" ng-model="uzanto.posxtkodo" required>
+    </div>
 
-  <div class="form-group col-md-6">
-    <label>Loĝlando:</label>
-    <br>
-    {{uzanto.lando.radikoEo + uzanto.lando.finajxoEo}}
-    <a href="" ng-click="uzanto.lando=null" ng-show="uzanto.lando"> redakti </a>
-    <select ng-hide="uzanto.lando"
-            class="form-control"
-            ng-model="uzanto.lando"
-            ng-options="(l.radikoEo + l.finajxoEo) for l in landoj |
-                        orderBy:'radikoEo'">
-    </select>
-</span>
-  </div>
+    <div class="form-group col-md-6">
+      <label>Loĝlando:</label>
+      <br>
+      {{uzanto.lando.radikoEo + uzanto.lando.finajxoEo}}
+      <a href="" ng-click="uzanto.lando=null" ng-show="uzanto.lando"> redakti </a>
+      <select ng-hide="uzanto.lando"
+              class="form-control"
+              ng-model="uzanto.lando"
+              ng-options="(l.radikoEo + l.finajxoEo) for l in landoj |
+                          orderBy:'radikoEo'">
+      </select>
+    </div>
 
-  <h3 class="col-md-12">Por aliri al via reta membrspaco</h3>
+    <h3 class="col-md-12">Por aliri al via reta membrspaco</h3>
 
     <label class="checkbox-inline col-md-12">
       <input type="checkbox" ng-init="membrspaco=true"
@@ -112,38 +111,33 @@
         kaj mi preferas aliri al UEA-servoj/informoj per papera poŝto.
     </label>
 
-    <div class="membrspaco" ng-show="membrspaco">
-      <div class="col-md-12">
-        <label for="uzantnomo"> Via retadreso*</label>
-        <input type="email" id="uzantnomo" class="form-control" ng-model="uzanto.retadreso">
+    <div class="membrspaco col-md-12" ng-if="membrspaco">
+      <div class="col-md-6">
+        <label for="retposxto"> Via retadreso</label>
+        <input type="email" id="retposxto"
+                class="form-control" ng-model="uzanto.retposxto" required>
         <p>Ĝi ne povas ekzisti en nia sistemo</p>
       </div>
 
-      <div class="form-group col-md-6">
-        <label for="pasvorto"> Via pasvorto*</label>
-        <input type="password"
+      <div class="form-group col-md-6" ng-init="pasvorto=false">
+        <label for="pasvorto"> Via pasvorto</label>
+        <input  ng-attr-type="{{ pasvorto ?'password' : 'text'}}"
                id="pasvorto"
                ng-model="uzanto.pasvorto"
-               class="form-control">
-        <p>Kune via retadreso, ĝi utilos por ensaluti en membrspaco</p>
-      </div>
-
-      <div class="form-group col-md-6">
-        <label for="pasvorto"> Retajpu la pasvorton*</label>
-        <input type="password"
-               id="pasvorto"
-               class="form-control">
-        <p>Ĝi devas esti egala al la antaŭa</p>
+               class="form-control" required>
+         <p>
+           <input type="checkbox" ng-click="pasvorto = !pasvorto"> Kaŝi pasvorton
+         </p>
       </div>
     </div>
 
-  <div class="form-group text-center">
-    <button submit type="submit"
-            ng-click="elPriUzanto()"
-            class="btn btn-outline-rounded btn-default">
-        Venonta
-      <span style="margin-left:10px;"
-            class="glyphicon glyphicon-arrow-right"></span></a>
-    </button>
-  </div>
+    <div class="form-group text-center ">
+      <button submit type="submit"
+              ng-click="elPriUzanto()"
+              class="btn btn-outline-rounded btn-default">
+          Venonta
+        <span style="margin-left:10px;"
+              class="glyphicon glyphicon-arrow-right"></span></a>
+      </button>
+    </div>
 </form>

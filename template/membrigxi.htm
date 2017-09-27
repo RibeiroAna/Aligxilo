@@ -25,11 +25,22 @@
       {{(kotizo.monero)}}
     </h1>
     <a href=""
-        editable-number="kotizo.prezo"
-        e-step="any">Redakti bazan kotizon*</a>
+        editable-number = "kotizo.prezo"
+        onbeforesave = "updateKotizo($data)"
+        e-min = "0"
+        e-step = "any">Redakti bazan kotizon*</a>
         (<a href="#!/form/membrigxi#2">2</a>)
     <p>La sumo egalas al {{jaroj}} x {{kotizo.prezo}} (baza kotizoj)</p>
   </div>
+
+  <div class="form-group col-md-12" ng-show="kanuto">
+   <label for="comment">
+     Vi petas rabaton pli granda ol 30%. Nia organizo havas tre limigitajn
+     subvenciojn por membrado. Kial vi kredas ke vi meritas ricevi
+     subvencion por via membrado? (Danke al fondaĵo Kanuto)
+   </label>
+   <textarea class="form-control" rows="5" id="comment"></textarea>
+ </div>
 
   <div class="form-group col-md-12">
   <!--La membrectipoj venos el ‘GET - https://api-adreso/grupoj/membrecoj/aldonaj’ -->
