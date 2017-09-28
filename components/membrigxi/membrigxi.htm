@@ -1,21 +1,20 @@
-  <div class="form-group col-md-12" data-ng-init="init()">
-    <label for="gxis">Vi membriĝas (<a href="#!/form/membrigxi#1">1</a>) ĝis la fino de... *</label>
+
+  <div class="container" data-ng-init="init()">
+    <form>
+      <label for="gxis">Vi membriĝas (<a href="#!/form/membrigxi#1">1</a>) por... *</label>
         <label class="radio-inline">
-          <input type="radio" name="jaroj" ng-model="jaroj" ng-value="1" ng-change="updateJaroj()">
-          {{jaro}} (por 1 jaro)
+          <input type="checkbox" name="jaroj" ng-model="mj[0]" value="1" ng-change="updateJaroj()">{{jaro}}
         </label>
         <label class="radio-inline">
-          <input type="radio" ng-model="jaroj" ng-value="2"  ng-change="updateJaroj()">
-          {{jaro + 1}} (por 2 jaroj)
+          <input type="checkbox" name="jaroj" ng-model="mj[1]" value="1" ng-change="updateJaroj()">{{jaro + 1}}
         </label>
         <label class="radio-inline">
-          <input type="radio" ng-model="jaroj" ng-value="5"  ng-change="updateJaroj()">
-          {{jaro + 5}} (por 5 jaroj)
+          <input type="checkbox" name="jaroj" ng-model="mj[2]" value="5" ng-change="updateJaroj()"> ĝis {{jaro + 5}} (por 5 jaroj)
         </label>
         <label class="radio-inline">
-          <input type="radio" ng-model="jaroj" ng-value="25"  ng-change="updateJaroj()">
-           Dumvive
+          <input type="checkbox" name="jaroj" ng-model="mj[3]" value="25" ng-change="updateJaroj()">Dumvive
         </label>
+    </form>
   </div>
 
   <div class="kotizo">
@@ -34,12 +33,12 @@
   </div>
 
   <div class="form-group col-md-12" ng-show="kanuto">
-   <label for="comment">
+   <label for="komento">
      Vi petas rabaton pli granda ol 30%. Nia organizo havas tre limigitajn
      subvenciojn por membrado. Kial vi kredas ke vi meritas ricevi
      subvencion por via membrado? (Danke al fondaĵo Kanuto)
    </label>
-   <textarea class="form-control" rows="5" id="comment"></textarea>
+   <textarea class="form-control" rows="5" id="komento" ng-model="kanutkialo"></textarea>
  </div>
 
   <div class="form-group col-md-12">

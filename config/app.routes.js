@@ -27,4 +27,3 @@ angular.module('formularoj').config(function($stateProvider, $urlRouterProvider)
             controller: "plusendiCtrl"
         })
 });
-

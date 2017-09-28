@@ -3,7 +3,6 @@ app.controller("prihomoCtrl", function ($scope, $rootScope, $window, $http, conf
     $scope.init = function() {
       $window.scrollTo(0, 0);
       $scope.uzanto = {};
-      $scope.max = new Date();
 
       $http.get(config.api_url + "/landoj").then(function(response) {
           $scope.landoj = response.data;
@@ -25,7 +24,7 @@ app.controller("prihomoCtrl", function ($scope, $rootScope, $window, $http, conf
             $scope.uzanto = $rootScope.uzanto;
             $scope.ensaluti = false;
           } else {
-            $scope.ensaluti = true;
+            $scope.ensaluti = false;
         }
       });
 

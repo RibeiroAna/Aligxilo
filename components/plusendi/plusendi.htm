@@ -1,11 +1,10 @@
 <h3 data-ng-init="init()" class="col-md-12">Resumo de viaj mendoj</h3>
-  {{uzanto}}
 <ul>
   <li>Baza membreco: <b>{{entutoKotizo * jaroj}}</b> {{monero}}</li>
-  <li ng-repeat="k in krommembrecoj" ng-if="krommem[$index]">
+  <li ng-repeat="k in krommembrecoj" ng-show="krommem[$index]">
     {{k.nomo}}: <b>{{prezo[$index].prezo}}</b> {{monero}}
   </li>
-  <li ng-repeat="fondajxo in fondajxoj" ng-if="fondajxo.donaco != 0">
+  <li ng-repeat="fondajxo in fondajxoj" ng-show="fondajxo.donaco != 0">
     Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{monero}}
   </li>
   <li><h4>Entuto: {{(entutoKotizo + entutoKrom) * jaroj + entutoDonaco}} {{monero}}</h4></li>
@@ -14,19 +13,21 @@
 <h3 class="col-md-12">
   Pagmaniero:
 </h3>
-<form>
+<form name="pagmaniero">
   <div class="col-md-12">
     <label>
       <input type="radio"
              ng-model="pago"
              ng-value="'ueakonto'"
-             name="pagmaniero">
+             name="pagmaniero"
+             ng-click="pagdetaloj={}"
+             required>
        UEA-konto
       <label ng-show="pago == 'ueakonto'">
         (Tajpu la UEA-kodo de la konto el kiu vi ŝatus fari la ĝiron.
          ni kontaktos la posedanton de la konto,
          kaze ne estas vi, por scii ĉu vi rajtas fari tiun ĝiron)
-         <input type="text" class="form-control">
+         <input type="text" class="form-control"  ng-init="pagdetaloj={}"  ng-model="pagdetaloj.detalo">
      </label>
     </label>
   </div>
@@ -36,40 +37,41 @@
       <input type="radio"
               ng-model="pago"
               ng-value="'kreditkarto'"
+              ng-click="pagdetaloj={}"
               name="pagmaniero">
 
       <i class="fa fa-credit-card" aria-hidden="true"></i>
       Kreditkarto
       <div ng-show="pago == 'kreditkarto'" class="kreditkarto">
         <label class="col-md-4">
-         <input type="radio" value="" name="kreditkarto">
+         <input type="radio" value="American" name="kreditkarto"  ng-model="pagdetaloj.detalo">
          <i class="fa fa-cc-amex fa-lg" aria-hidden="true"></i>
          American Express
        </label>
 
        <label class="col-md-4">
-         <input type="radio" value="" name="kreditkarto">
+         <input type="radio" value="Mastercard" name="kreditkarto" ng-model="pagdetaloj.detalo">
          <i class="fa fa-cc-mastercard fa-lg" aria-hidden="true"></i>
          Mastercard/ Eurocard/ Access
        </label>
 
        <label class="col-md-4">
-         <input type="radio" value="" name="kreditkarto">
+         <input type="radio" value="visa" name="kreditkarto" ng-model="pagdetaloj.detalo">
          <i class="fa fa-cc-visa fa-lg" aria-hidden="true"></i>
          Visa/ Carte Bleue
        </label>
         <div class="form-group col-md-12">
           <label for="nomo">Nomo kiel en la kreditkarto:</label>
-          <input type="text" class="form-control" id="nomo">
+          <input type="text" class="form-control" id="nomo" ng-model="pagdetaloj.kreditnomo">
         </div>
         <div class="form-group col-md-12">
           <label for="numero">Kreditkarta numero:</label>
-          <input type="number" class="form-control" id="numero">
+          <input type="number" class="form-control" id="numero" ng-model="pagdetaloj.kreditnumero">
         </div>
         <div class="form-group col-md-6">
          <label for="numero">
            Kontrolnumero (en la kartdorso):
-           <input type="number" class="form-control" maxlength="4">
+           <input type="number" class="form-control" maxlength="4"  ng-model="pagdetaloj.kontrolo">
          </label>
        </div>
        <div class="form-group col-md-6">
@@ -78,7 +80,7 @@
               id="validdato"
               type="text"
               class="form-control"
-              ng-model="vouDecidir"
+              ng-model="pagdetaloj.kreditvalida"
               placeholder="MM/JJ"
               ui-mask="99/99"
               ui-mask-placeholder>
@@ -92,14 +94,14 @@
       <input type="radio"
              ng-model="pago"
              ng-value="'banko'"
-             name="pagmaniero" >
+             name="pagmaniero"
+            ng-click="pagdetaloj={}">
       <i class="fa fa-university" aria-hidden="true"></i>
       Bankĝiro
     </label>
-    <select class="form-control" ng-show="pago == 'banko'">
-      <option></option>
-      <option> ABN-Amro Bank, Postbus 949, NL-3000 DD Rotterdam (IBAN: NL66 ABNA 0426 0515 99, BIC/SWIFT: ABNANL2A)</option>
-      <option>	ING Bank, Postbus 1800, NL-1000 BV Amsterdam (IBAN: NL72 INGB 0000 3789 64, BIC/SWIFT: INGBNL2A) </option>
+    <select class="form-control" ng-show="pago == 'banko'"  ng-model="pagdetaloj.detalo" >
+      <option value="ABN"> ABN-Amro Bank, Postbus 949, NL-3000 DD Rotterdam (IBAN: NL66 ABNA 0426 0515 99, BIC/SWIFT: ABNANL2A)</option>
+      <option value="ING">	ING Bank, Postbus 1800, NL-1000 BV Amsterdam (IBAN: NL72 INGB 0000 3789 64, BIC/SWIFT: INGBNL2A) </option>
     </select>
   </div>
 
@@ -108,18 +110,18 @@
       <input type="radio"
              ng-model="pago"
              ng-value="'posxtbanko'"
-             name="pagmaniero">
+             name="pagmaniero"
+             ng-click="pagdetaloj={}">
       <i class="fa fa-university" aria-hidden="true"></i>
       Poŝtbanko
       ← Ĉiuj kontoj estas nome de Universala Esperanto-Asocio, Rotterdam
     </label>
     <select class="form-control"
-            ng-show="pago == 'posxtbanko'">
-      <option></option>
-      <option><b>Belgio:</b> IBAN: BE54 0001 6318 3197, BIC: BPOTBEB1XXX </option>
-      <option><b>Germanio:</b> IBAN: DE51 3701 0050 0318 2915 09, BIC: PBNKDEFF </option>
-      <option><b>Svedio:</b> IBAN: SE95 9500 0099 6042 0074 3740, BIC: NDEASESS</option>
-      <option><b>Svislando:</b> IBAN: CH86 0900 0000 1200 2310 0 BIC: POFICHBEXXX</option>
+            ng-show="pago == 'posxtbanko'" ng-model="pagdetaloj.detalo">
+      <option value="Belgio"><b>Belgio:</b> IBAN: BE54 0001 6318 3197, BIC: BPOTBEB1XXX </option>
+      <option value="Germanio"><b>Germanio:</b> IBAN: DE51 3701 0050 0318 2915 09, BIC: PBNKDEFF </option>
+      <option value="Svedio"><b>Svedio:</b> IBAN: SE95 9500 0099 6042 0074 3740, BIC: NDEASESS</option>
+      <option value="Svislando"><b>Svislando:</b> IBAN: CH86 0900 0000 1200 2310 0 BIC: POFICHBEXXX</option>
     </select>
   </div>
 
@@ -127,6 +129,7 @@
     <label>
       <input type="radio"
              ng-model="pago"
+             ng-click="pagdetaloj={}"
              ng-value="'paypal'"
              name="pagmaniero">
       <i class="fa fa-paypal" aria-hidden="true"></i>
@@ -138,6 +141,7 @@
     <label>
       <input type="radio"
              ng-model="pago"
+             ng-click="pagdetaloj={}"
              ng-value="'cxeko'"
              name="pagmaniero">
       <i class="fa fa-money" aria-hidden="true"></i>
@@ -146,7 +150,7 @@
   </div>
 
   <!--tio venas el   GET - /Perantoj-->
-  <div class="col-md-12">
+  <div class="col-md-12" ng-show="perantoj.length > 0">
    <label>
       <input type="radio"
               name="pagmaniero"
@@ -156,7 +160,8 @@
        Peranto
     </label>
    <select class="form-control"
-           ng-model="krominformo"
+           ng-click="pagdetaloj={}"
+           ng-model="pagdetaloj"
            ng-show="pago =='peranto'"
            ng-options="(peranto.publikaNomo) for peranto in perantoj">
     </select>

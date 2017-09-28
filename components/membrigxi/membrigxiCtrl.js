@@ -2,17 +2,27 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
 
   $scope.init = function () {
     $window.scrollTo(0, 0);
-    $scope.jaro = (new Date()).getFullYear();
+    $scope.jaro = parseInt((new Date()).getFullYear());
     $scope.entuto = 0;
-    $scope.kanuto = false;
+    $rootScope.kanuto = false;
 
-    if(!$rootScope.uzanto) {
+    if($rootScope.kanutkialo){
+      $scope.kanutkialo = $rootScope.kanutkialo;
+    }
+
+    if((!$rootScope.uzanto) || ($rootScope.uzanto.naskigxtagoSenFormo == "")) {
       $window.location.href = '#!/form/prihomo';
     }
+
+    var nt = $rootScope.uzanto.naskigxtagoSenFormo;
+    $scope.naskigxiaro = parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
+    $rootScope.agxo = $scope.jaro - $scope.naskigxiaro;
 
     if(!$rootScope.jaroj) {
       $scope.jaroj = 1;
       $rootScope.jaroj = 1;
+      $rootScope.mj = [];
+      $rootScope.mj[0] = true;
     } else {
       $scope.jaroj = $rootScope.jaroj;
     }
@@ -34,10 +44,15 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
     .then(function (response) {
         $scope.kotizo = response.data[0];
         $scope.kotizo.prezo = $scope.kotizo.prezo / 100;
-        $rootScope.sesdekKotizo = $scope.kotizo.prezo * 0.6;
+        if($rootScope.agxo <= config.tejoagxo) {
+          $scope.kotizo.prezo = $scope.kotizo.prezo - $scope.kotizo.junaRabato / 100;
+        }
+        $rootScope.sepdekKotizo = $scope.kotizo.prezo * 0.7;
         $rootScope.monero = $scope.kotizo.monero;
         if($rootScope.entutoKotizo) {
           $scope.kotizo.prezo = $rootScope.entutoKotizo;
+          if($rootScope.entutoKotizo < $rootScope.sepdekKotizo)
+            $rootScope.kanuto = true;
         } else {
           $rootScope.entutoKotizo = $scope.kotizo.prezo;
         }
@@ -55,6 +70,9 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
           $http.get(config.api_url + kromprezo)
               .then(function (response) {
               response.data[0].prezo = response.data[0].prezo / 100;
+              if($rootScope.agxo <= config.tejoagxo) {
+                response.data[0].prezo = response.data[0].prezo - response.data[0].junaRabato  / 100;
+              }
               $rootScope.prezo.push(response.data[0]);
           });
         }
@@ -76,16 +94,32 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
  }
 
   $scope.updateKotizo = function(valoro) {
-    if(valoro < $rootScope.sesdekKotizo) {
-      $scope.kanuto = true;
+    if(valoro < $rootScope.sepdekKotizo) {
+      $rootScope.kanuto = true;
     } else {
-      $scope.kanuto = false;
+      $rootScope.kanuto = false;
     }
     $rootScope.entutoKotizo = valoro;
   }
 
  $scope.updateJaroj = function() {
+   $scope.jaroj = 0;
+   for(key in $rootScope.mj) {
+     if($rootScope.mj[key]){
+      if(key < 2)
+        $scope.jaroj += 1;
+      else
+        if (key == 2)
+          $scope.jaroj += 5;
+        else
+          $scope.jaroj += 25;
+     }
+   }
    $rootScope.jaroj = $scope.jaroj;
  }
+
+ $scope.$on("$destroy", function(){
+     $rootScope.kanutkialo = $scope.kanutkialo;
+ });
 
 });

@@ -10,6 +10,13 @@ body {
   color:black;
 }
 
+.kreditkarto {
+  width: 70%;
+  padding: 5px;
+  height: 400px;
+  background: #f2f2f2;
+}
+
 .checkbox-inline {
   margin: 12px;
 }
@@ -224,6 +231,10 @@ p.round-tabs {
 }
 
 @media( max-width : 490px ){
+
+.kreditkarto {
+  width: 100%;
+}
 
 .titolo {
   padding-left: 10%;
