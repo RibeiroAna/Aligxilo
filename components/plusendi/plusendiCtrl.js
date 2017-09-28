@@ -120,7 +120,7 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
 
   $scope.plusendi = function() {
     //Kreas uzanton kaze ĝi ne ekzistas
-    if($scope.Pagmaniero.$valid) {
+    if($scope.pagmaniero.$valid) {
       if(!$rootScope.uzanto.id) {
         $rootScope.uzanto.uzantnomo =  $rootScope.uzanto.retposxto;
         $rootScope.uzanto.idLando = $rootScope.uzanto.lando.id;
