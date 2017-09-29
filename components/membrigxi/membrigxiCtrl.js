@@ -10,11 +10,14 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
       $scope.kanutkialo = $rootScope.kanutkialo;
     }
 
-    if((!$rootScope.uzanto) || ($rootScope.uzanto.naskigxtagoSenFormo == "")) {
+    if(!$rootScope.uzanto) {
       $window.location.href = '#!/form/prihomo';
     }
 
     var nt = $rootScope.uzanto.naskigxtagoSenFormo;
+    if(!nt) {
+      $window.location.href = '#!/form/prihomo';
+    }
     $scope.naskigxiaro = parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
     $rootScope.agxo = $scope.jaro - $scope.naskigxiaro;
 
