@@ -49,20 +49,26 @@
        ng-repeat="krom in krommembrecoj">
       <label>
         <input type="checkbox"
-               ng-model="krommem[$index]"
-               ng-change="updateEntuto($index)">
+               ng-init="krom.elektita=false"
+               ng-model="krom.elektita"
+               ng-change="updateEntuto()">
         <b>{{krom.nomo}}:</b> {{krom.priskribo}}
         <b>prezo:</b>
-        {{jaroj * prezo[$index].prezo}}
+        <b ng-if="!tejoagxo">{{jaroj * krom.prezo}}</b>
+        <b ng-if="tejoagxo">{{jaroj * (krom.prezo - krom.junaRabato)}}</b>
         {{monero}}
       </label>
     </div>
-    <h4>
+    <h4  ng-if="!tejoagxo">
       Entuta valoro por membriĝi plus servoj:
       {{(kotizo.prezo + entuto) * jaroj ||
       "Elektu landon"}} {{monero}}
     </h4>
-
+    <h4  ng-if="tejoagxo">
+      Entuta valoro por membriĝi plus servoj:
+      {{(kotizo.prezo - kotizo.junaRabato + entuto) * jaroj ||
+      "Elektu landon"}} {{monero}}
+    </h4>
   </div>
 
   <div class="form-group text-center">

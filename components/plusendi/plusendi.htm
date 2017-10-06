@@ -1,8 +1,13 @@
 <h3 data-ng-init="init()" class="col-md-12">Resumo de viaj mendoj</h3>
 <ul>
   <li>Baza membreco: <b>{{entutoKotizo * jaroj}}</b> {{monero}}</li>
-  <li ng-repeat="k in krommembrecoj" ng-show="krommem[$index]">
-    {{k.nomo}}: <b>{{prezo[$index].prezo}}</b> {{monero}}
+  <li ng-repeat="krom in krommembrecoj" ng-show="krom.elektita">
+
+    {{krom.nomo}}:
+      <b ng-if="!tejoagxo">{{krom.prezo}}</b>
+      <b ng-if="tejoagxo">{{krom.prezo - krom.junaRabato}}</b>
+
+    {{monero}}
   </li>
   <li ng-repeat="fondajxo in fondajxoj" ng-show="fondajxo.donaco != 0">
     Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{monero}}

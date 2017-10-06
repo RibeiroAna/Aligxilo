@@ -3,7 +3,7 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
   $scope.init = function () {
     $window.scrollTo(0, 0);
     $scope.jaro = parseInt((new Date()).getFullYear());
-    $scope.entuto = 0;
+    $rootScope.entuto = 0;
     $rootScope.kanuto = false;
 
     if($rootScope.kanutkialo){
@@ -17,9 +17,10 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
     var nt = $rootScope.uzanto.naskigxtagoSenFormo;
     if(!nt) {
       $window.location.href = '#!/form/prihomo';
+    } else{
+      var agxo = $scope.jaro - parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
+      $rootScope.tejoagxo = (agxo < config.tejoagxo)? true: false;
     }
-    $scope.naskigxiaro = parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
-    $rootScope.agxo = $scope.jaro - $scope.naskigxiaro;
 
     if(!$rootScope.jaroj) {
       $scope.jaroj = 1;
@@ -28,13 +29,6 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
       $rootScope.mj[0] = true;
     } else {
       $scope.jaroj = $rootScope.jaroj;
-    }
-
-    $scope.krommem = [];
-
-    if($rootScope.krommem) {
-      $scope.krommem = $rootScope.krommem;
-      $scope.entuto =  $rootScope.entutoKrom;
     }
 
     if(($rootScope.uzanto) && ($rootScope.uzanto.lando)) {
@@ -64,46 +58,34 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
 
     $http.get(config.api_url + "/grupoj/membrecoj/aldonoj").then(
       function(response) {
-        $rootScope.krommembrecoj = response.data;
-        $rootScope.prezo = [];
-        for (var i = 0; i < $rootScope.krommembrecoj.length; i++) {
-          var id = $rootScope.krommembrecoj[i].id;
+        $rootScope.krommembrecoj = [];
+        for (var i = 0; i < response.data.length; i++) {
+          var id = response.data[i].id;
           var kromprezo = "/grupoj/" + id +
                           "/kotizoj?idLando=" + idLando;
           $http.get(config.api_url + kromprezo)
               .then(function (response) {
               response.data[0].prezo = response.data[0].prezo / 100;
-              if($rootScope.agxo <= config.tejoagxo) {
-                response.data[0].prezo = response.data[0].prezo - response.data[0].junaRabato  / 100;
-              }
-              $rootScope.prezo.push(response.data[0]);
+              response.data[0].junaRabato = response.data[0].junaRabato / 100;
+              $rootScope.krommembrecoj.push(response.data[0]);
           });
         }
     });
  }
 
- $scope.updateEntuto = function(index) {
-   if(!$rootScope.prezo) {
-     $scope.krommem[index] = false;
-   } else {
-     if($scope.krommem[index]) {
-       $scope.entuto += ($rootScope.prezo[index].prezo);
-     } else {
-       $scope.entuto -= ($rootScope.prezo[index].prezo);
+ $scope.updateEntuto = function() {
+   $rootScope.entuto = 0;
+
+   for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
+     if($rootScope.krommembrecoj[i].elektita) {
+       if($rootScope.tejoagxo) {
+         $rootScope.entuto += $rootScope.krommembrecoj[i].prezo - $rootScope.krommembrecoj[i].junaRabato;
+       } else {
+          $rootScope.entuto += $rootScope.krommembrecoj[i].prezo;
+       }
      }
    }
-   $rootScope.krommem = $scope.krommem;
-   $rootScope.entutoKrom = $scope.entuto;
  }
-
-  $scope.updateKotizo = function(valoro) {
-    if(valoro < $rootScope.sepdekKotizo) {
-      $rootScope.kanuto = true;
-    } else {
-      $rootScope.kanuto = false;
-    }
-    $rootScope.entutoKotizo = valoro;
-  }
 
  $scope.updateJaroj = function() {
    $scope.jaroj = 0;
