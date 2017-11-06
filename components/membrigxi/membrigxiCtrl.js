@@ -1,4 +1,4 @@
-app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, config) {
+app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, config, membrigxiService) {
 
   $scope.init = function () {
     $window.scrollTo(0, 0);
@@ -38,45 +38,53 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
         var idLando = $rootScope.uzanto.lando.id;
     }
 
-    var kotizajPeto = "/grupoj/" + config.idBazaMembreco +
-    "/kotizoj?idLando=" + idLando;
-    $http.get(config.api_url + kotizajPeto)
-    .then(function (response) {
+    var success = function (response) {
         $scope.kotizo = response.data[0];
         $scope.kotizo.prezo = $scope.kotizo.prezo / 100;
         if($rootScope.agxo <= config.tejoagxo) {
-          $scope.kotizo.prezo = $scope.kotizo.prezo - $scope.kotizo.junaRabato / 100;
+            $scope.kotizo.prezo = $scope.kotizo.prezo - $scope.kotizo.junaRabato / 100;
         }
         $rootScope.sepdekKotizo = $scope.kotizo.prezo * 0.7;
         $rootScope.monero = $scope.kotizo.monero;
         if($rootScope.entutoKotizo) {
-          $scope.kotizo.prezo = $rootScope.entutoKotizo;
-          if($rootScope.entutoKotizo < $rootScope.sepdekKotizo)
-            $rootScope.kanuto = true;
+            $scope.kotizo.prezo = $rootScope.entutoKotizo;
+            if($rootScope.entutoKotizo < $rootScope.sepdekKotizo)
+                $rootScope.kanuto = true;
         } else {
-          $rootScope.entutoKotizo = $scope.kotizo.prezo;
+            $rootScope.entutoKotizo = $scope.kotizo.prezo;
         }
-      });
+    };
+
+    var error = function (err) {
+        console.log(err);
+    };
 
 
-    $http.get(config.api_url + "/grupoj/membrecoj/aldonoj").then(
-      function(response) {
-        $rootScope.krommembrecoj = response.data;
-        $rootScope.prezo = [];
-        for (var i = 0; i < $rootScope.krommembrecoj.length; i++) {
-          var id = $rootScope.krommembrecoj[i].id;
-          var kromprezo = "/grupoj/" + id +
-                          "/kotizoj?idLando=" + idLando;
-          $http.get(config.api_url + kromprezo)
-              .then(function (response) {
-              response.data[0].prezo = response.data[0].prezo / 100;
-              if($rootScope.agxo <= config.tejoagxo) {
-                response.data[0].prezo = response.data[0].prezo - response.data[0].junaRabato  / 100;
-              }
-              $rootScope.prezo.push(response.data[0]);
-          });
-        }
-    });
+      membrigxiService.getKotizajPeto(config.idBazaMembreco, idLando).then(success, error);
+
+      membrigxiService.getAldonoj().then(function(response) {
+         $rootScope.krommembrecoj = response.data;
+         $rootScope.prezo = [];
+
+         var success = function (response) {
+             response.data[0].prezo = response.data[0].prezo / 100;
+             if($rootScope.agxo <= config.tejoagxo) {
+                 response.data[0].prezo = response.data[0].prezo - response.data[0].junaRabato  / 100;
+             }
+             $rootScope.prezo.push(response.data[0]);
+         };
+
+         var error = function (err) {
+             console.log(err);
+         };
+
+         for (var i = 0; i < $rootScope.krommembrecoj.length; i++) {
+             var id = $rootScope.krommembrecoj[i].id;
+             membrigxiService.getKotizajPeto(id, idLando).then(success, error);
+         }
+     }, error);
+
+
  }
 
  $scope.updateEntuto = function(index) {

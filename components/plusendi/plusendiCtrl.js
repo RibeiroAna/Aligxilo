@@ -1,5 +1,5 @@
 app.controller("plusendiCtrl", function ($scope, $rootScope,
-                                      $window, $http, config) {
+                                      $window, $http, config, plusendiService) {
 
   $scope.init = function() {
     $window.scrollTo(0, 0);
@@ -7,12 +7,16 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
       $window.location.href = '#!/form/membrigxi';
     }
 
-    //Get Perantoj
-      var perantoj = "/perantoj?idLando=" + $rootScope.uzanto.lando.id;
-      $http.get(config.api_url + perantoj)
-          .then(function(response) {
-            $scope.perantoj = response.data;
-      });
+      var success = function (response) {
+          $scope.perantoj = response.data;
+      };
+
+      var error = function (err) {
+          console.log(err);
+      };
+
+      //Get Perantoj
+      plusendiService.getPerantoByLando($rootScope.uzanto.lando.id).then(success, error);
   }
 
   function replacer (key, value) {
@@ -57,12 +61,9 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
      observo += "<b>Pagmaniero</b>" + $scope.pago + "<br>";
      observo += "<b>Pagdetaloj</b>" + JSON.stringify($scope.pagdetaloj, replacer);
 
-     var req = {
-         method: 'POST',
-         url: config.api_url + '/financoj/mesagxi',
-         data: {mesagxo: observo, temo: 'Nova aliĝpeto en UEA'}
-       };
-    $http(req);
+      var data = {mesagxo: observo, temo: 'Nova aliĝpeto en UEA'};
+
+      plusendiService.postMesagxi(data);
   }
 
   $scope.registriMembrecojn = function(idAno) {
@@ -93,22 +94,15 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
           findato: findato,
           dumviva: dumviva
         };
-        var req = {
-          method: 'POST',
-          url: config.api_url + '/grupoj/' + config.idBazaMembreco + '/anoj',
-          data: datumoj
-        };
-        $http(req);
+
+        var data = datumoj;
+
+        plusendiService.postGrupo(config.idBazaMembreco, data);
 
         if($rootScope.krommem){
           for(var i = 0; i < $rootScope.krommem.length; i++) {
             if($rootScope.krommem[i]) {
-              var req = {
-                method: 'POST',
-                url: config.api_url + '/grupoj/' +  $rootScope.krommembrecoj[i].id + '/anoj',
-                data: datumoj
-              };
-              $http(req);
+               plusendiService.postGrupo($rootScope.krommembrecoj[i].id, datumoj);
             }
           }
         }
@@ -128,16 +122,20 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
         $rootScope.uzanto.naskigxtago = (nt[4] + nt[5] + nt[6] + nt[7] + "-" +
                                          nt[2] + nt[3] + "-" + nt[0] + nt[1]).toString();
         $scope.financajObservoj();
-        var req = {
-          method: 'POST',
-          url: config.api_url + '/uzantoj',
-          data: $rootScope.uzanto
-        };
-        $http(req).then(
-          function(sucess) {
-           $rootScope.uzanto.id = sucess.data.id;
-           $scope.registriMembrecojn(sucess.data.id);
-          });
+
+          var data = $rootScope.uzanto
+
+          var success = function (response) {
+              $rootScope.uzanto.id = response.data.id;
+              $scope.registriMembrecojn(response.data.id);
+          };
+
+          var error = function (err) {
+              console.log(err);
+          };
+
+          plusendiService.postUzanto(data).then(success, error);
+
       } else {
         $scope.registriMembrecojn($rootScope.uzanto.id);
       }
