@@ -38,12 +38,14 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
       observo += $rootScope.kanutkialo + "<br>";
     }
 
-    if($rootScope.krommem) {
-      observo += "<b>Aliaj krommembrecoj: </b><br>";
-      for(var i = 0; i < $rootScope.krommem.length; i++) {
-        if($rootScope.krommem[i]) {
-          observo += "-" + $rootScope.krommembrecoj[i].nomo + " prezo:";
-          observo += $rootScope.prezo[i].prezo   * $rootScope.jaroj + "<br>";
+    observo += "<b>Aliaj krommembrecoj: </b><br>";
+    for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
+      if($rootScope.krommembrecoj[i].elektita) {
+        observo += "-" + $rootScope.krommembrecoj[i].nomo + " prezo:";
+        if($rootScope.tejoagxo) {
+          observo += $rootScope.krommembrecoj[i].prezo - $rootScope.krommembrecoj[i].junaRabato + "<br>";
+        } else {
+          observo += $rootScope.krommembrecoj[i].prezo + "<br>";
         }
       }
     }
@@ -67,7 +69,6 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
   }
 
   $scope.registriMembrecojn = function(idAno) {
-        console.log(idAno);
         var dumviva = false;
         var jaro = (new Date()).getFullYear();
         if($rootScope.mj[1] && !$rootScope.mj[0]) {
@@ -114,7 +115,7 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
 
   $scope.plusendi = function() {
     //Kreas uzanton kaze ĝi ne ekzistas
-    if($scope.Pagmaniero.$valid) {
+    if($scope.pagmaniero.$valid) {
       if(!$rootScope.uzanto.id) {
         $rootScope.uzanto.uzantnomo =  $rootScope.uzanto.retposxto;
         $rootScope.uzanto.idLando = $rootScope.uzanto.lando.id;

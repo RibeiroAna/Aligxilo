@@ -3,20 +3,24 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
   $scope.init = function () {
     $window.scrollTo(0, 0);
     $scope.jaro = parseInt((new Date()).getFullYear());
-    $scope.entuto = 0;
+    $rootScope.entuto = 0;
     $rootScope.kanuto = false;
 
     if($rootScope.kanutkialo){
       $scope.kanutkialo = $rootScope.kanutkialo;
     }
 
-    if((!$rootScope.uzanto) || ($rootScope.uzanto.naskigxtagoSenFormo == "")) {
+    if(!$rootScope.uzanto) {
       $window.location.href = '#!/form/prihomo';
     }
 
     var nt = $rootScope.uzanto.naskigxtagoSenFormo;
-    $scope.naskigxiaro = parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
-    $rootScope.agxo = $scope.jaro - $scope.naskigxiaro;
+    if(!nt) {
+      $window.location.href = '#!/form/prihomo';
+    } else{
+      var agxo = $scope.jaro - parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
+      $rootScope.tejoagxo = (agxo < config.tejoagxo)? true: false;
+    }
 
     if(!$rootScope.jaroj) {
       $scope.jaroj = 1;
@@ -25,13 +29,6 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
       $rootScope.mj[0] = true;
     } else {
       $scope.jaroj = $rootScope.jaroj;
-    }
-
-    $scope.krommem = [];
-
-    if($rootScope.krommem) {
-      $scope.krommem = $rootScope.krommem;
-      $scope.entuto =  $rootScope.entutoKrom;
     }
 
     if(($rootScope.uzanto) && ($rootScope.uzanto.lando)) {
@@ -82,32 +79,21 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
              membrigxiService.getKotizajPeto(id, idLando).then(success, error);
          }
      }, error);
-
-
  }
 
- $scope.updateEntuto = function(index) {
-   if(!$rootScope.prezo) {
-     $scope.krommem[index] = false;
-   } else {
-     if($scope.krommem[index]) {
-       $scope.entuto += ($rootScope.prezo[index].prezo);
-     } else {
-       $scope.entuto -= ($rootScope.prezo[index].prezo);
+ $scope.updateEntuto = function() {
+   $rootScope.entuto = 0;
+
+   for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
+     if($rootScope.krommembrecoj[i].elektita) {
+       if($rootScope.tejoagxo) {
+         $rootScope.entuto += $rootScope.krommembrecoj[i].prezo - $rootScope.krommembrecoj[i].junaRabato;
+       } else {
+          $rootScope.entuto += $rootScope.krommembrecoj[i].prezo;
+       }
      }
    }
-   $rootScope.krommem = $scope.krommem;
-   $rootScope.entutoKrom = $scope.entuto;
  }
-
-  $scope.updateKotizo = function(valoro) {
-    if(valoro < $rootScope.sepdekKotizo) {
-      $rootScope.kanuto = true;
-    } else {
-      $rootScope.kanuto = false;
-    }
-    $rootScope.entutoKotizo = valoro;
-  }
 
  $scope.updateJaroj = function() {
    $scope.jaroj = 0;
