@@ -8,7 +8,7 @@
         <label class="radio-inline">
           <input type="checkbox" name="jaroj" ng-model="mj[1]" value="1" ng-change="updateJaroj()">{{jaro + 1}}
         </label>
-        <label class="radio-inline">
+        <label class="radio-inline">  <!--La membrectipoj venos el ‘GET - https://api-adreso/grupoj/membrecoj/aldonaj’ -->
           <input type="checkbox" name="jaroj" ng-model="mj[2]" value="5" ng-change="updateJaroj()"> ĝis {{jaro + 5}} (por 5 jaroj)
         </label>
         <label class="radio-inline">
@@ -17,6 +17,16 @@
     </form>
   </div>
 
+  <div class="form-group col-md-12">
+    <h4><b>Vi membriĝas je la kategorio...</b></h4>
+    <div class="checkbox">
+      <input type="radio"><b>Nova baza retmembreco: </b> Donas aliron al la reta
+       versio de revuoj, voĉdoni, rabato en kongresoj kaj libroservo.
+       <b>Kotizo:</b> {{kotizo.prezo}}{{monero}} 
+
+    </div>
+  </div>
+<!--
   <div class="kotizo">
     <h4>Sugestita kotizo:</h4>
     <h1>
@@ -39,10 +49,9 @@
      subvencion por via membrado? (Danke al fondaĵo Kanuto)
    </label>
    <textarea class="form-control" rows="5" id="komento" ng-model="kanutkialo"></textarea>
- </div>
+ </div> -->
 
   <div class="form-group col-md-12">
-  <!--La membrectipoj venos el ‘GET - https://api-adreso/grupoj/membrecoj/aldonaj’ -->
   <h4 for="krome"><b>Krom la baza membrenco, vi povas havi...</b></h4>
   <p>Vi havos tion proporcie al la tempo al kiu vi aliĝas</p>
   <div class="checkbox"
@@ -70,7 +79,7 @@
         <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span>
         Antaŭa
       </a>
-      <a ui-sref="form.donaci" class="btn btn-outline-rounded btn-default"> Venonta
+      <a ui-sref="form.donaci" class="btn btn-outline-rounded btn-default"> Malantaŭa
         <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span>
       </a>
   </div>

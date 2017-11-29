@@ -1,4 +1,4 @@
-app.service('membrigxiService', function ($http) {
+app.service('membrigxiService', function ($http, config) {
     var service = this;
 
     service.getKotizajPeto = getKotizajPeto;
@@ -8,13 +8,9 @@ app.service('membrigxiService', function ($http) {
     function getKotizajPeto(idMembreco, idLando) {
         return $http.get(config.api_url + "/grupoj/" + idMembreco + "/kotizoj?idLando=" + idLando);
     }
-    
+
     function getAldonoj() {
-        return $http.get(config.api_url + "/grupoj/membrecoj/aldonoj");
+        return $http.get(config.api_url + "/grupoj/" + config.idAldonaMembrecgrupo);
     }
-
-
-
     return service;
-
 });

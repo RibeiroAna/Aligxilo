@@ -1,4 +1,4 @@
-app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, config, membrigxiService) {
+app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, membrigxiService) {
 
   $scope.init = function () {
     $window.scrollTo(0, 0);
@@ -58,7 +58,6 @@ app.controller("membrigxiCtrl", function ($scope, $http, $rootScope, $window, co
     var error = function (err) {
         console.log(err);
     };
-
 
       membrigxiService.getKotizajPeto(config.idBazaMembreco, idLando).then(success, error);
 
