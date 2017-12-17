@@ -1,14 +1,10 @@
-<h3 class="col-md-12" data-ng-init="init()">Pri vi...</h3>
+<form name="prihomo" data-ng-init="init()">
 
-<!-- <a href="" ng-click="ensaluti = true" class="col-md-12">  Malfermi la ensalutilon</a>
-<div class="ensaluti" ng-show="ensaluti">
-  <a href="" ng-click="ensaluti = false">Fermi [X]</a>
-  <h1>Ensaluti por aliĝi estos eblo en dua versio</h1>
-</div> -->
-
-<br><br>
-<form name="prihomo">
-
+  <div class="alert alert-danger alert-dismissable" id="eraro"
+        ng-show="irita && prihomo.$invalid">
+    Estas eraroj en la aliĝilo
+  </div>
+  <h3 class="col-md-12">Pri vi...</h3>
     <div class="col-md-12">
       <div class="form-group col-md-4">
         <label for="jaro">Titolo</label>
@@ -33,52 +29,85 @@
     </div>
 
     <div class="col-md-12">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-6"
+           ng-class="{'has-error': (prihomo.personanomo.$touched || irita) && prihomo.personanomo.$invalid }">
         <label> Via(j) personnomo(j)*</label>
-        <input type="text" class="form-control" ng-model="uzanto.personanomo" required>
+        <input type='text'
+               class="form-control"
+               name="personanomo"
+               ng-model="uzanto.personanomo" required>
+           <div class="help-block" ng-messages="prihomo.personanomo.$error"
+                ng-show="prihomo.personanomo.$touched || irita">
+              <div ng-messages-include="config/messages.html"></div>
+            </div>
       </div>
 
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-6"
+           ng-class="{'has-error': (prihomo.familianomo.$touched || irita) && prihomo.familianomo.$invalid}">
         <label> Via(j) familinomo(j)*</label>
-        <input type="text" class="form-control" ng-model="uzanto.familianomo" required>
+        <input type="text"
+               class="form-control"
+               ng-model="uzanto.familianomo"
+               name="familianomo" required>
+        <div class="help-block"
+             ng-messages="prihomo.familianomo.$error"
+             ng-show="prihomo.familianomo.$touched || irita">
+           <div ng-messages-include="config/messages.html"></div>
+        </div>
       </div>
     </div>
-    <div class="col-md-12">
+
+    <div class="col-md-12"
+         ng-class="{'has-error': (prihomo.naskigxitago.$touched || irita) && prihomo.naskigxitago.$invalid }">
       <div class="form-group col-md-4">
         <label>Naskiĝidato* (TT/MM/JJJJ)</label>
         <input type="text"
+               name="naskigxitago"
                class="form-control"
                ng-model="uzanto.naskigxtagoSenFormo"
+               name="naskigxitago"
                placeholder="TT/MM/JJJJ"
                ui-mask="99/99/9999" ui-mask-placeholder required>
+          <div class="help-block"
+               ng-messages="prihomo.naskigxitago.$error"
+               ng-show="prihomo.naskigxitago.$touched || irita">
+            <div ng-messages-include="config/messages.html"></div>
+          </div>
       </div>
     </div>
 
-    <div class="col-md-12">
-      <div class="form-group col-md-4">
-        <label>UEA-kodo (xxxx-x)</label>
-        <input type="text"
-               class="form-control"
-               ng-model="uzanto.ueakodo"
-               placeholder="XXXX-X"
-               ui-mask="AAAA-A" ui-mask-placeholder>
-        Se vi ne memoras, aŭ ne scias pri kio temas, ne plenumu tiun kampon
-      </div>
     </div>
     <div class="col-md-12">
       <h3>Adreso</h3>
-      <div class="form-group col-md-12">
+      <div class="form-group col-md-12"
+           ng-class="{'has-error': (prihomo.adreso.$touched || irita) && prihomo.adreso.$invalid}">
         <label for="adreso">Strata adreso kaj urbo*
                             (skribu en via loka lingvo)</label>
-        <textarea class="form-control" rows="5"
-                  id="adreso" ng-model="uzanto.adreso" required></textarea>
+        <textarea class="form-control"
+                  rows="5"
+                  name="adreso"
+                  ng-model="uzanto.adreso" required></textarea>
         <p>Ĝi estas bezonata por fari fakturojn kaj por eventuale sendi
           aferojn, kaze vi mendos kelkajn el niaj revuoj kaj eldonaĵoj.</p>
+        <div class="help-block"
+             ng-messages="prihomo.adreso.$error"
+             ng-show="prihomo.adreso.$touched || irita">
+            <div ng-messages-include="config/messages.html"></div>
+         </div>
       </div>
 
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-6"
+           ng-class="{'has-error': (prihomo.posxtkodo.$touched || irita) && prihomo.posxtkodo.$invalid}">
         <label>Poŝtkodo*</label>
-        <input type="text" class="form-control" ng-model="uzanto.posxtkodo" required>
+        <input type="text"
+               class="form-control"
+               name="posxtkodo"
+               ng-model="uzanto.posxtkodo" required>
+         <div class="help-block"
+              ng-messages="prihomo.posxtkodo.$error"
+              ng-show="prihomo.posxtkodo.$touched || irita">
+             <div ng-messages-include="config/messages.html"></div>
+          </div>
       </div>
 
       <div class="form-group col-md-6">
@@ -139,32 +168,51 @@
       <label class="checkbox-inline col-md-12">
         <input type="checkbox" ng-init="membrspaco=true"
                ng-click="membrspaco = !membrspaco">
-          Mi <b>NE</b> volas aliron al la reta membrspaco
-          kaj mi preferas aliri al UEA-servoj/informoj per papera poŝto.
+          Mi <b>NE</b> volas aliron al la reta membrspaco.
       </label>
 
-      <div class="membrspaco col-md-12" ng-if="membrspaco">
-        <div class="col-md-6">
+      <div class="membrspaco col-md-12"
+           ng-if="membrspaco">
+        <div class="col-md-6"
+             ng-class="{'has-error': (prihomo.retposxto.$touched || irita) && prihomo.retposxto.$invalid }">
           <label for="retposxto"> Via retadreso*</label>
-          <input type="email" id="retposxto"
-                  class="form-control" ng-model="uzanto.retposxto">
-          <p>Ĝi ne povas ekzisti en nia sistemo</p>
+          <input type="email"
+                  id="retposxto"
+                  ng-change="prihomo.retposxto.$error = {}"
+                  name="retposxto"
+                  class="form-control"
+                  ng-model="uzanto.retposxto" required>
+          <div class="help-block"
+                ng-messages="prihomo.retposxto.$error"
+                ng-show="prihomo.retposxto.$touched || irita">
+               <div ng-messages-include="config/messages.html"></div>
+          </div>
         </div>
 
-        <div class="form-group col-md-6" ng-init="pasvorto=false">
+        <div class="form-group col-md-6"
+             ng-init="pasvorto=false"
+             ng-class="{'has-error': (prihomo.pasvorto.$touched || irita) && prihomo.pasvorto.$invalid }">
           <label for="pasvorto"> Via pasvorto*</label>
-          <input  ng-attr-type="{{ pasvorto ?'password' : 'text'}}"
+          <input ng-attr-type="{{pasvorto?'text':'password'}}"
                  id="pasvorto"
+                 name="pasvorto"
+                 minlength=6
                  ng-model="uzanto.pasvorto"
                  class="form-control" required>
-           <p>
-             <input type="checkbox" ng-click="pasvorto = !pasvorto"> Kaŝi pasvorton
-           </p>
+          <div class="help-block"
+                ng-messages="prihomo.pasvorto.$error"
+                ng-show="prihomo.pasvorto.$touched || irita">
+               <div ng-messages-include="config/messages.html"></div>
+          </div>
+          <p>
+             <input type="checkbox" ng-click="pasvorto = !pasvorto"> Montri pasvorton
+          </p>
         </div>
     </div>
 
     <div class="form-group text-center ">
-      <button submit type="submit"
+      <button type="button"
+              name="malantauxa"
               ng-click="elPriUzanto()"
               class="btn btn-outline-rounded btn-default">
           Malantaŭa

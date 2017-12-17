@@ -4,24 +4,22 @@ app.service('plusendiService', function ($http, config) {
     service.getPerantoByLando = getPerantoByLando;
     service.postMesagxi = postMesagxi;
     service.postUzanto = postUzanto;
-    service.postGrupo = postGrupo;
+    service.postMembreco = postMembreco;
 
     function getPerantoByLando(idLando) {
         return $http.get(config.api_url + "/perantoj?idLando=" + idLando);
     };
 
-
     function postMesagxi(data) {
         return $http.post(config.api_url + '/financoj/mesagxi', data);
     };
-
 
     function postUzanto(data) {
         return $http.post(config.api_url + '/uzantoj', data);
     };
 
-    function postGrupo(idMembro, data) {
-        return $http.post(config.api_url + '/grupoj/' + idMembro + '/anoj', data);
+    function postMembreco(idGrupo, data) {
+        return $http.post(config.api_url + '/grupoj/' + idGrupo + '/anoj', data);
     }
 
     return service;

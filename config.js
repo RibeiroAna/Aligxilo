@@ -3,15 +3,11 @@ app.service('config', function($http){
 
   service.api_url = "http://localhost:3000";
 
-  $http.get(service.api_url + "/config/idBazaMembreco").then(
-    function sucess(response) {
-      service.idBazaMembreco = response.data.idBazaMembreco;
-    }
-  );
+  service.getConfig = getConfig;
 
-  $http.get(service.api_url + "/config/idAldonaMembrecgrupo").then(
-    function sucess(response) {
-      service.idAldonaMembrecgrupo = response.data.idAldonaMembrecgrupo;
-    }
-  );
+  function getConfig(valoro) {
+    return $http.get(service.api_url + "/config/" + valoro);
+  }
+
+  return service;
 });

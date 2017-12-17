@@ -1,84 +1,100 @@
-
-  <div class="container" data-ng-init="init()">
+<div class="container" data-ng-init="init()">
     <form>
-      <label for="gxis">Vi membriĝas (<a href="#!/form/membrigxi#1">1</a>) por... *</label>
-        <label class="radio-inline">
-          <input type="checkbox" name="jaroj" ng-model="mj[0]" value="1" ng-change="updateJaroj()">{{jaro}}
-        </label>
-        <label class="radio-inline">
-          <input type="checkbox" name="jaroj" ng-model="mj[1]" value="1" ng-change="updateJaroj()">{{jaro + 1}}
-        </label>
-        <label class="radio-inline">  <!--La membrectipoj venos el ‘GET - https://api-adreso/grupoj/membrecoj/aldonaj’ -->
-          <input type="checkbox" name="jaroj" ng-model="mj[2]" value="5" ng-change="updateJaroj()"> ĝis {{jaro + 5}} (por 5 jaroj)
-        </label>
-        <label class="radio-inline">
-          <input type="checkbox" name="jaroj" ng-model="mj[3]" value="25" ng-change="updateJaroj()">Dumvive
-        </label>
-    </form>
-  </div>
+      <h3 class="col-md-12">Membreco...</h3>
+      <label for="gxis">Vi membriĝas por... *</label>
+      <select class="form-control" ng-model="jaroj" ng-change="updateEntuto()">
+        <option ng-value="1">
+            Nur por la nuna jaro ({{jaro}})
+        </option>
+        <option ng-value="1.1">
+            Nur por la venonta jaro ({{jaro + 1}})
+        </option>
+        <option ng-value="2">
+            Tiu ĉi jaro kaj la venonta jaro ({{jaro}} kaj {{jaro + 1}})
+        </option>
+        <option ng-value="5">
+            ĝis {{jaro + 5}} (por 5 jaroj)
+        </option>
+        <option ng-value="25">
+          Dumvive
+        </option>
+      </select>
 
   <div class="form-group col-md-12">
     <h4><b>Vi membriĝas je la kategorio...</b></h4>
-    <div class="checkbox">
-      <input type="radio"><b>Nova baza retmembreco: </b> Donas aliron al la reta
-       versio de revuoj, voĉdoni, rabato en kongresoj kaj libroservo.
-       <b>Kotizo:</b> {{kotizo.prezo}}{{monero}} 
+      <div class="radio"
+           ng-repeat="mem in membrecgrupoj">
+          <label>
+            <input type="radio"
+                   ng-model="$parent.memelektita"
+                   ng-value="mem"
+                   ng-change="updateEntuto()"
+                   name="kategorio">
+            <b ng-show="mem == retmembreco" style="color:#F7B733">
+              <i class="fa fa-star" aria-hidden="true"></i>
+            </b>
+            <b>{{mem.nomo}}:</b> {{mem.priskribo}}
+            <b>kotizo:</b>
+            <b ng-if="!tejoagxo">{{(jaroj | number:0) * mem.kotizo}}</b>
+            <b ng-if="tejoagxo">{{(jaroj | number:0) * (mem.kotizo - mem.junaRabato)}}</b>
+            {{valuto}}
 
+            <span ng-show="mem == retmembreco" class="noto">
+              <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+              Baldaŭ tiu estos la nura elektebla kategorio, ni forte rekomendas membriĝi je ĝi
+            </span>
+          </label>
+      </div>
+  </div>
+
+  <div class="form-group col-md-12">
+    <h4 for="krome"><b>Krom la baza membrenco, vi povas havi...</b></h4>
+    <p>Vi havos tion proporcie al la tempo al kiu vi aliĝas</p>
+    <div class="checkbox"
+         ng-repeat="krom in krommembrecoj">
+        <label>
+          <input type="checkbox"
+                 ng-init="krom.elektita=false"
+                 ng-model="krom.elektita"
+                 ng-change="updateEntuto();">
+          <b>{{krom.nomo}}:</b> {{krom.priskribo}}
+          <b>kotizo:</b>
+          <b ng-if="!tejoagxo">{{(jaroj | number:0) * krom.kotizo}}</b>
+          <b ng-if="tejoagxo">{{(jaroj | number:0) * (krom.kotizo - krom.junaRabato)}}</b>
+          {{valuto}}
+        </label>
+      </form>
     </div>
   </div>
-<!--
-  <div class="kotizo">
-    <h4>Sugestita kotizo:</h4>
-    <h1>
-      {{ (jaroj * (kotizo.prezo))}}
-      {{(kotizo.monero)}}
-    </h1>
-    <a href=""
-        editable-number = "kotizo.prezo"
-        onbeforesave = "updateKotizo($data)"
-        e-min = "0"
-        e-step = "any">Redakti bazan kotizon*</a>
-        (<a href="#!/form/membrigxi#2">2</a>)
-    <p>La sumo egalas al {{jaroj}} x {{kotizo.prezo}} (baza kotizoj)</p>
-  </div>
 
-  <div class="form-group col-md-12" ng-show="kanuto">
+   <h2 align="center" ng-show="!novkotizo || novkotizo == entuto || memelektita != retmembreco">
+      Entuto: {{entuto}} {{valuto}}
+   </h2>
+
+    <h2 ng-show="(novkotizo > -1 && novkotizo != entuto && memelektita == retmembreco)" align="center">
+       Entuto: <strike>{{entuto}} {{valuto}}</strike>... {{novkotizo}} {{valuto}}
+    </h2>
+
+  <p align="center" ng-show="memelektita == retmembreco">
+     <a data-title="Enmetu kiom vi povas pagi"
+        href=""
+        editable-number = "novkotizo"
+        onaftersave = "petiRabaton($data)"
+        e-min = "0"
+        e-label="Tajpu kiom vi povas pagi:"
+        e-step = "any">
+        Se tiu monsumo estas tro alta por vi aŭ se vi povas pagi pli ol tio, klaku ĉi tie.
+    </a>
+   </p>
+
+  <div class="form-group col-md-12" ng-show="kanuto && memelektita == retmembreco">
    <label for="komento">
      Vi petas rabaton pli granda ol 30%. Nia organizo havas tre limigitajn
      subvenciojn por membrado. Kial vi kredas ke vi meritas ricevi
      subvencion por via membrado? (Danke al fondaĵo Kanuto)
    </label>
    <textarea class="form-control" rows="5" id="komento" ng-model="kanutkialo"></textarea>
- </div> -->
-
-  <div class="form-group col-md-12">
-  <h4 for="krome"><b>Krom la baza membrenco, vi povas havi...</b></h4>
-  <p>Vi havos tion proporcie al la tempo al kiu vi aliĝas</p>
-  <div class="checkbox"
-       ng-repeat="krom in krommembrecoj">
-      <label>
-        <input type="checkbox"
-               ng-init="krom.elektita=false"
-               ng-model="krom.elektita"
-               ng-change="updateEntuto()">
-        <b>{{krom.nomo}}:</b> {{krom.priskribo}}
-        <b>prezo:</b>
-        <b ng-if="!tejoagxo">{{jaroj * krom.prezo}}</b>
-        <b ng-if="tejoagxo">{{jaroj * (krom.prezo - krom.junaRabato)}}</b>
-        {{monero}}
-      </label>
-    </div>
-    <h4  ng-if="!tejoagxo">
-      Entuta valoro por membriĝi plus servoj:
-      {{(kotizo.prezo + entuto) * jaroj ||
-      "Elektu landon"}} {{monero}}
-    </h4>
-    <h4  ng-if="tejoagxo">
-      Entuta valoro por membriĝi plus servoj:
-      {{(kotizo.prezo - kotizo.junaRabato + entuto) * jaroj ||
-      "Elektu landon"}} {{monero}}
-    </h4>
-  </div>
+ </div>
 
   <div class="form-group text-center">
       <a ui-sref="form.prihomo" class="btn btn-outline-rounded btn-default">
@@ -89,18 +105,4 @@
         <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span>
       </a>
   </div>
-
-  <p class="noto">
-    NOTOJ:
-    <p id="1">
-      1) La baza membreco donas la rajton ricevi rabaton en la Universala Kongreso kaj en la libroservo,
-      la rajto voĉdoni, kaj se vi aliros la retan membrspacon, ankaŭ ricevi
-      retan version de Revuo Esperanto, Revuo Kontakto kaj Jarlibro
-    </p>
-
-    <p id="2">
-      2) La redaktado de la baza kotizo okazas en du kazoj, se vi ne povas pagi tiom multe, vi povas
-      peti por pagi malpli (ĝis 30% malpli, la akcepto estas aŭtomata). Se vi povas pagi pli,
-      vi povas indiki tion enmetante pli grandan sumon.
-    </p>
-  </p>
+</div>

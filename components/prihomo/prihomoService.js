@@ -4,6 +4,7 @@ app.service('prihomoService', function ($http, config) {
     service.getLandoj = getLandoj;
     service.getIpapi = getIpapi;
     service.getInfoPriLanda = getInfoPriLanda;
+    service.getEkzistantaRetposxto = getEkzistantaRetposxto;
 
     function getLandoj() {
         return $http.get(config.api_url + "/landoj");
@@ -17,5 +18,9 @@ app.service('prihomoService', function ($http, config) {
         return $http.get('https://ipapi.co/json');
     };
 
+    function getEkzistantaRetposxto(data) {
+      return $http.get(config.api_url + "/uzantoj/cxuMembro/" + data);
+    }
+
     return service;
-})
+});

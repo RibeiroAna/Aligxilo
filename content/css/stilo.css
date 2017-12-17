@@ -10,11 +10,15 @@ body {
   color:black;
 }
 
+.popover {
+  display: none;
+}
+
 .kreditkarto {
   width: 70%;
   padding: 5px;
   height: 400px;
-  background: #f2f2f2;
+  background: #f9f9f9;
 }
 
 .checkbox-inline {
@@ -38,8 +42,7 @@ body {
 }
 
 .noto {
-  background-color: #326464;
-  color: white;
+  color: #326464;
 }
 
 .ensaluti a {
@@ -119,17 +122,13 @@ body {
     margin: 0px auto;
     height: auto;
     background: #fff;
-    /*box-shadow: 10px 10px #ccc,-10px 20px #ddd;*/
 }
 
 .board .nav-tabs {
     position: relative;
-    /* border-bottom: 0; */
-    /* width: 80%; */
     margin: 20px auto;
     margin-bottom: 0;
     box-sizing: border-box;
-
 }
 
 p.narrow{
@@ -175,9 +174,6 @@ p.round-tabs {
   text-align: left;
 }
 
-/*.nav-tabs > li.active > a span.round-tabs{
-    background: #fafafa;
-}*/
 .nav-tabs > li {
     width: 25%;
 }
@@ -190,8 +186,6 @@ p.round-tabs {
     margin: 0 auto;
     bottom: 0px;
     border: 5px solid transparent;
-    border-bottom-color: #ddd;
-    transition:0.1s ease-in-out;
 }
 
 .nav-tabs > li.active:after {
@@ -201,8 +195,6 @@ p.round-tabs {
     opacity:1;
     margin: 0 auto;
     bottom: 0px;
-    border: 10px solid transparent;
-    border-bottom-color: #ddd;
 }
 
 .nav-tabs > li a{
@@ -211,6 +203,7 @@ p.round-tabs {
    margin: 20px auto;
    border-radius: 100%;
    padding: 0;
+   pointer-events: none;
 }
 
 .tab-content .tab-pane{
@@ -264,12 +257,6 @@ span.round-tabs {
 .tab-content .head{
   font-size:20px;
 }
-/*
-.nav-tabs > li a {
-  width: 20px;
-  height: 0px;
-  line-height:50px;
-}*/
 
 .nav-tabs > li.active:after {
   content: " ";

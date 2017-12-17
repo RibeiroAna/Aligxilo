@@ -1,16 +1,21 @@
 app.service('membrigxiService', function ($http, config) {
     var service = this;
 
-    service.getKotizajPeto = getKotizajPeto;
-    service.getAldonoj = getAldonoj;
+    service.getKotizo = getKotizo;
+    service.getMemreco = getMembreco;
+    service.getGrupKat = getGrupKat;
 
 
-    function getKotizajPeto(idMembreco, idLando) {
+    function getKotizo(idMembreco, idLando) {
         return $http.get(config.api_url + "/grupoj/" + idMembreco + "/kotizoj?idLando=" + idLando);
     }
 
-    function getAldonoj() {
-        return $http.get(config.api_url + "/grupoj/" + config.idAldonaMembrecgrupo);
+    function getGrupKat(idKat) {
+        return $http.get(config.api_url + "/grupoj/kategorioj/" + idKat + "/sub");
+    }
+
+    function getMembreco(idMembreco) {
+        return $http.get(config.api_url + "/grupoj/" + idMembreco);
     }
     return service;
 });
