@@ -1,6 +1,13 @@
-app.value('config', {
-   "api_url": "https://api.uea.splab.ufcg.edu.br",
-   "idAdministranto": "1",
-   "tejoagxo":"35",
-   "idBazaMembreco": '7'
+app.service('config', function($http){
+  var service = this;
+
+  service.api_url = "http://localhost:3000";
+
+  service.getConfig = getConfig;
+
+  function getConfig(valoro) {
+    return $http.get(service.api_url + "/config/" + valoro);
+  }
+
+  return service;
 });

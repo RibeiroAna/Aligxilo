@@ -1,18 +1,53 @@
-app.controller("plusendiCtrl", function ($scope, $rootScope,
-                                      $window, $http, config) {
+app.controller("plusendiCtrl", function ($scope, $rootScope, $q,
+                                         $window, $http, config,
+                                         plusendiService) {
 
   $scope.init = function() {
-    $window.scrollTo(0, 0);
-    if(!$rootScope.monero) {
-      $window.location.href = '#!/form/membrigxi';
-    }
+      if(!$rootScope.valuto) {
+        $window.location.href = '#!/form/prihomo';
+      }
 
-    //Get Perantoj
-      var perantoj = "/perantoj?idLando=" + $rootScope.uzanto.lando.id;
-      $http.get(config.api_url + perantoj)
-          .then(function(response) {
-            $scope.perantoj = response.data;
-      });
+      var success = function (response) {
+          $scope.perantoj = response.data;
+      };
+
+      var error = function (err) {
+          console.log(err);
+      };
+
+      var dumviva = false;
+      var dato = new Date();
+
+      var jaro = dato.getFullYear();
+      var tago = dato.getDate();
+      var monato = dato.getMonth() + 1;
+
+      if($rootScope.jaroj != 1.5) {
+        var komencdato = jaro + "-" + monato + "-" + tago;
+      } else {
+        var komencdato = jaro + 1 + "-01-01";
+      }
+      var findato = jaro + 1 + "-01-20"
+      if($rootScope.jaroj == 1.5 || $rootScope.jaroj == 2) {
+        findato = (jaro + 2) + "-01-20";
+      }
+      if($rootScope.jaroj == 5) {
+        findato = (jaro + 5) + "-01-20";
+      }
+      if($rootScope.jaroj == 25) {
+        findato = undefined;
+        dumviva = true;
+      }
+
+      //Enmetas en baza membreca grupo
+      $scope.datumoj = {
+        idAno: '',
+        komencdato: komencdato,
+        findato: findato,
+        observoj: '',
+        dumviva: dumviva
+      };
+      plusendiService.getPerantoByLando($rootScope.uzanto.lando.id).then(success, error);
   }
 
   function replacer (key, value) {
@@ -24,11 +59,11 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
 
   $scope.financajObservoj = function() {
     var observo = "Financaj informoj por " + $rootScope.uzanto.personanomo +
-                " " +  $rootScope.uzanto.familianomo + " " + $rootScope.uzanto.retposxto;
-    observo += "<br>Ĉiuj valoroj estas en " + $rootScope.monero + "<br>";
-    observo += "<b>Baza membreco: </b>"
-    observo += "Entuta prezo sugestita de la homo: " + ($rootScope.entutoKotizo
-      * $rootScope.jaroj) + "<br>";
+                  " " +  $rootScope.uzanto.familianomo + " " +
+                  $rootScope.uzanto.retposxto;
+    observo += "<br>Ĉiuj valoroj estas en " + $rootScope.valuto + "<br>";
+    observo += "<b>Baza membreco elektita: </b>" + $rootScope.memelektita.nomo;
+
     if($rootScope.kanuto) {
       observo += "La homo kandidatiĝis por ricevi subvencion. Klarigoj: ";
       observo += $rootScope.kanutkialo + "<br>";
@@ -55,68 +90,51 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
         }
       }
     }
+    if($rootScope.novkotizo) {
+      observo += "Petita novkotizo de la homo " + $rootScope.novkotizo;
+    }
 
      observo += "<b>Pagmaniero</b>" + $scope.pago + "<br>";
+
+     $scope.datumoj.observoj = observo.toString();
+
      observo += "<b>Pagdetaloj</b>" + JSON.stringify($scope.pagdetaloj, replacer);
 
-     var req = {
-         method: 'POST',
-         url: config.api_url + '/financoj/mesagxi',
-         data: {mesagxo: observo, temo: 'Nova aliĝpeto en UEA'}
-       };
-    $http(req);
+     var data = {mesagxo: observo, temo: 'Nova aliĝpeto en UEA'};
+
+     plusendiService.postMesagxi(data);
   }
 
-  $scope.registriMembrecojn = function(idAno) {
-        var dumviva = false;
-        var jaro = (new Date()).getFullYear();
-        if($rootScope.mj[1] && !$rootScope.mj[0]) {
-          var komencdato = (jaro) + "-12-20";
-        } else {
-          var komencdato = (jaro - 1) + "-12-20";
-        }
-        var findato = jaro + "-12-20"
-        if($rootScope.mj[1]) {
-          findato = (jaro + 1) + "-12-20";
-        }
-        if($rootScope.mj[2]) {
-          findato = (jaro + 5) + "-12-20";
-        }
-        if($rootScope.mj[3]) {
-          findato = undefined;
-          dumviva = true;
-        }
+  var error = function (err) {
+      if(err.status == 400) {
+        window.alert("Vi ŝajne uzas ne permesitan karakterojn en via aliĝpeto!");
+      } else {
+        window.alert("Iu ne atendita eraro okazis. Provu denove");
+      }
+      console.log(err);
+      $window.location.href = '#!/form/membrigxi';
+  };
 
-        //Enmetas en baza membreca grupo
-        var datumoj = {
-          idAno: idAno,
-          komencdato: komencdato,
-          findato: findato,
-          dumviva: dumviva
-        };
-        var req = {
-          method: 'POST',
-          url: config.api_url + '/grupoj/' + config.idBazaMembreco + '/anoj',
-          data: datumoj
-        };
-        $http(req);
-
-        if($rootScope.krommem){
-          for(var i = 0; i < $rootScope.krommem.length; i++) {
-            if($rootScope.krommem[i]) {
-              var req = {
-                method: 'POST',
-                url: config.api_url + '/grupoj/' +  $rootScope.krommembrecoj[i].id + '/anoj',
-                data: datumoj
-              };
-              $http(req);
-            }
+  $scope.registriMembrecojn = function() {
+      var promises = [];
+      promises.push(
+              plusendiService.postMembreco($rootScope.memelektita.id,
+                                           $scope.datumoj));
+      if($rootScope.krommem){
+        for(var i = 0; i < $rootScope.krommem.length; i++) {
+          if($rootScope.krommem[i]) {
+             promises.push(
+                     plusendiService.postMembreco($rootScope.krommembrecoj[i].id,
+                                                  $scope.datumoj));
           }
         }
+      }
 
-      window.alert("Dankon, via aliĝo estis registrita");
-      $window.location.href = '#!/form/membrigxi';
-      $window.location.reload()
+     $q.all(promises).then(function(success) {
+         window.alert("Dankon, via aliĝo estis registrita");
+         $window.location.href = '#!/form/membrigxi';
+         $window.location.reload();
+      }, error);
   }
 
   $scope.plusendi = function() {
@@ -125,20 +143,16 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
       if(!$rootScope.uzanto.id) {
         $rootScope.uzanto.uzantnomo =  $rootScope.uzanto.retposxto;
         $rootScope.uzanto.idLando = $rootScope.uzanto.lando.id;
-        var nt = $rootScope.uzanto.naskigxtagoSenFormo;
-        $rootScope.uzanto.naskigxtago = (nt[4] + nt[5] + nt[6] + nt[7] + "-" +
-                                         nt[2] + nt[3] + "-" + nt[0] + nt[1]).toString();
-        $scope.financajObservoj();
-        var req = {
-          method: 'POST',
-          url: config.api_url + '/uzantoj',
-          data: $rootScope.uzanto
-        };
-        $http(req).then(
-          function(sucess) {
-           $rootScope.uzanto.id = sucess.data.id;
-           $scope.registriMembrecojn(sucess.data.id);
-          });
+
+          var success = function (response) {
+              $rootScope.uzanto.id = response.data.id;
+              $scope.datumoj.idAno = response.data.id;
+              $scope.financajObservoj();
+              $scope.registriMembrecojn();
+          };
+
+          plusendiService.postUzanto($rootScope.uzanto).then(success, error);
+
       } else {
         $scope.registriMembrecojn($rootScope.uzanto.id);
       }

@@ -7,11 +7,11 @@
         <td><h4><b>Priskribo de la fondaĵo</b></h4></td>
         <td>
             <h4><b>Kvanto donaconta</b></h4>
-            ĉiuj valoroj estas en {{monero}}
+            ĉiuj valoroj estas en {{valuto}}
         </td>
       </tr>
     </thead>
-    <tr ng-repeat="f in fondajxoj">
+    <tr ng-repeat="f in fondajxoj  | limitTo: montritajFondajxoj">
       <td><h4>{{f.nomo}}</h4></td>
       <td>{{f.priskribo}}</td>
       <td>
@@ -23,10 +23,27 @@
                ng-change="updateEntuto()">
       </td>
     </tr>
+    <tr ng-show="montritajFondajxoj == 5">
+      <td colspan="3">
+         <button type="button" class="btn btn-block"
+                ng-click="montritajFondajxoj = fondajxoj.length">
+                Vidi pliajn fondaĵojn
+         </button>
+      </td>
+    </tr>
+
+    <tr ng-show="montritajFondajxoj == fondajxoj.length">
+      <td colspan="3">
+         <button type="button" class="btn btn-block"
+                ng-click="montritajFondajxoj = 5">
+                Vidi mapli
+         </button>
+      </td>
+    </tr>
     <tr>
       <td></td>
       <td><h3>Entuto por donacoj:</h3></td>
-      <td><h3>{{entuto || 0}} {{monero}}</h3></td>
+      <td><h3>{{entuto || 0}} {{valuto}}</h3></td>
     </tr>
   </table>
 
@@ -35,7 +52,7 @@
       <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span>
       Antaŭa
     </a>
-    <a ui-sref="form.plusendi" class="btn btn-outline-rounded btn-default"> Venonta
+    <a ui-sref="form.plusendi" class="btn btn-outline-rounded btn-default"> Malantaŭa
       <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span>
     </a>
   </div>
