@@ -101,9 +101,9 @@ app.controller("plusendiCtrl", function ($scope, $rootScope,
         };
         $http(req);
 
-        if($rootScope.krommem){
-          for(var i = 0; i < $rootScope.krommem.length; i++) {
-            if($rootScope.krommem[i]) {
+        if($rootScope.krommembrecoj){
+          for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
+            if($rootScope.krommembrecoj[i].elektita) {
               var req = {
                 method: 'POST',
                 url: config.api_url + '/grupoj/' +  $rootScope.krommembrecoj[i].id + '/anoj',
