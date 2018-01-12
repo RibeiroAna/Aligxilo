@@ -1,18 +1,27 @@
 <h3 data-ng-init="init()" class="col-md-12">Resumo de viaj mendoj</h3>
 <ul>
-  <li>Baza membreco: <b>{{entutoKotizo * jaroj}}</b> {{monero}}</li>
+  <li>{{memelektita.nomo}}:
+      <b ng-if="!tejoagxo">{{memelektita.kotizo * (jaroj | number:0)}}</b>
+      <b ng-if="tejoagxo">{{(memelektita.kotizo - memelektita.junaRabato)*(jaroj | number:0)}}</b> {{valuto}}
+  </li>
   <li ng-repeat="krom in krommembrecoj" ng-show="krom.elektita">
-
     {{krom.nomo}}:
-      <b ng-if="!tejoagxo">{{krom.prezo}}</b>
-      <b ng-if="tejoagxo">{{krom.prezo - krom.junaRabato}}</b>
-
-    {{monero}}
+      <b ng-if="!tejoagxo">{{krom.kotizo*(jaroj | number:0)}}</b>
+      <b ng-if="tejoagxo">{{(krom.kotizo - krom.junaRabato)*(jaroj | number:0)}}</b>
+    {{valuto}}
   </li>
   <li ng-repeat="fondajxo in fondajxoj" ng-show="fondajxo.donaco != 0">
-    Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{monero}}
+    Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{valuto}}
   </li>
-  <li><h4>Entuto: {{(entutoKotizo + entutoKrom) * jaroj + entutoDonaco}} {{monero}}</h4></li>
+  <li>
+    <h4 ng-show="!novkotizo || novkotizo == entuto || memelektita != retmembreco">
+      Entuto: {{entuto + entutoDonaco}} {{valuto}}
+    </h4>
+    <h4 ng-show="novkotizo && memelektita == retmembreco">
+      Entuto: <strike>{{entuto + entutoDonaco}}</strike>
+      {{novkotizo + entutoDonaco}} {{valuto}}
+    </h4>
+  </li>
 </ul>
 
 <h3 class="col-md-12">
@@ -185,8 +194,7 @@
 
   <div class="checkbox col-md-12">
     <label>
-      <input type="checkbox" required>
-      Mi konsentas kun la
+      Plusendado de tiu formularon signifas ke vi konsentas kun la
       <a href="" onclick="window.alert('Ne preta')">
          privatecpolitiko
        </a>
