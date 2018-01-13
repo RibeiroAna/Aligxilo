@@ -121,7 +121,7 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q,
               plusendiService.postMembreco($rootScope.memelektita.id,
                                            $scope.datumoj));
       if($rootScope.krommembrecoj){
-        for(var i = 0; i < $rootScope.krommem.length; i++) {
+        for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
           if($rootScope.krommembrecoj[i].elektita) {
              promises.push(
                      plusendiService.postMembreco($rootScope.krommembrecoj[i].id,
