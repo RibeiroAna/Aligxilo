@@ -1,4 +1,4 @@
-app.controller("prihomoCtrl", function ($scope, $rootScope, $window, $http, prihomoService) {
+app.controller("prihomoCtrl", function ($scope, $rootScope, $window, prihomoService) {
 
     $scope.init = function() {
       $scope.uzanto = {};
