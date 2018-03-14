@@ -10,6 +10,10 @@ body {
   color:black;
 }
 
+.kotizoj {
+  padding-left: 25%;
+}
+
 .popover {
   display: none;
 }
