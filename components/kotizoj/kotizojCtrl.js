@@ -1,20 +1,20 @@
-app.controller("kotizojCtrl", function ($scope, $rootScope, $window, config,
+app.controller("kotizojCtrl", function ($scope, $rootScope, $window, $mdDialog, config,
                                         prihomoService, membrigxiService) {
 
   $scope.init = function() {
     prihomoService.getLandoj().then(success, error);
   }
 
-  $scope.getKotizoj = function() {
-    var getKotizo = function(elemento){
-      membrigxiService.getKotizo(elemento.id, $scope.lando.id)
-      .then(function(response) {
-          elemento.kotizo = response.data[0].prezo/100;
-          elemento.junaRabato = response.data[0].junaRabato/100;
-          $scope.updateEntuto();
-      }, error);
-    }
+  var getKotizo = function(elemento){
+    membrigxiService.getKotizo(elemento.id, $scope.lando.id)
+    .then(function(response) {
+        elemento.kotizo = response.data[0].prezo/100;
+        elemento.junaRabato = response.data[0].junaRabato/100;
+        $scope.updateEntuto();
+    }, error);
+  }
 
+  $scope.getKotizoj = function() {
     config.getConfig("idAldonaMembrecgrupo").then(function(response) {
       $scope.idAldonaMembrecgrupo = response.data.idAldonaMembrecgrupo;
       membrigxiService.getGrupKat($scope.idAldonaMembrecgrupo).then(function(response) {
@@ -63,8 +63,13 @@ app.controller("kotizojCtrl", function ($scope, $rootScope, $window, config,
     $scope.gxisdatigiLandon = function() {
       prihomoService.getInfoPriLanda($scope.lando.landkodo).
       then(function(response){
-        $rootScope.landInformoj = response.data;
-
+        $scope.landInformoj = response.data;
+        for(var i = 0; i < $rootScope.krommembrecoj.length; i++){
+          getKotizo($rootScope.krommembrecoj[i]);
+        }
+        for(var i = 0; i < $rootScope.membrecgrupoj.length; i++){
+          getKotizo($rootScope.membrecgrupoj[i]);
+        }
       });
     };
 

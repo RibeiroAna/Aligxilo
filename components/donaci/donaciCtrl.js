@@ -9,29 +9,29 @@
          {
            nomo: "Ĝenerala Kaso",
            priskribo:"Plifortigas la ĝeneralajn financojn de UEA",
-           donaco: 5
+           donaco: ($rootScope.membrecgrupoj[0].kotizo)
          },
          {
            nomo: "Fondaĵo kanuto",
            priskribo: "Helpas al limigita nombro de aktivuloj," +
                       " kiuj mem ne povas pagi plenan kotizon",
-           donaco: 5
+           donaco: ($rootScope.membrecgrupoj[0].kotizo)
          },
          {
            nomo: "Volontula Fondaĵo",
            priskribo: "Subtenas la Volontulan Servon, kadre de kiu esperantistoj" +
                       "laboras kaj spertiĝas en la Centra Oficejo de UEA",
-           donaco: 5
+           donaco: ($rootScope.membrecgrupoj[0].kotizo)
          },
          {
            nomo: "Volontula Domo",
            priskribo: "Subtenas kaj financas la Volontulan Domon",
-           donaco: 5
+           donaco: ($rootScope.membrecgrupoj[0].kotizo)
          },
          {
            nomo: "Junularo",
            priskribo: "Subtenas TEJO, la junularan sekcion de UEA",
-           donaco: 5
+           donaco: ($rootScope.membrecgrupoj[0].kotizo)
          },
          {
            nomo: "Konto Espero",

@@ -4,7 +4,7 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
     $scope.jaro = parseInt((new Date()).getFullYear());
     $rootScope.entuto = 0;
     $rootScope.kanuto = false;
-
+    
     if($rootScope.kanutkialo){
       $scope.kanutkialo = $rootScope.kanutkialo;
       $rootScope.kanuto = true;
@@ -56,35 +56,47 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
       }, error);
     }
 
-    config.getConfig("idAldonaMembrecgrupo").then(function(response) {
-      $scope.idAldonaMembrecgrupo = response.data.idAldonaMembrecgrupo;
-      membrigxiService.getGrupKat($scope.idAldonaMembrecgrupo).then(function(response) {
-        $rootScope.krommembrecoj = response.data;
-        for(var i = 0; i < $rootScope.krommembrecoj.length; i++){
-          getKotizo($rootScope.krommembrecoj[i]);
-        }
-      }, error);
-    }, error);
-
-    config.getConfig("idMembrecgrupo").then(function(response) {
-      $scope.idMembrecgrupo = response.data.idMembrecgrupo;
-      membrigxiService.getGrupKat($scope.idMembrecgrupo).then(function(response) {
-        $rootScope.membrecgrupoj = response.data;
-        for(var i = 0; i < $rootScope.membrecgrupoj.length; i++){
-          if($rootScope.membrecgrupoj[i].nomo.toLowerCase().indexOf("ret") > -1) {
-            $rootScope.retmembreco = $rootScope.membrecgrupoj[i];
-            $rootScope.memelektita = $rootScope.retmembreco;
-            $rootScope.entuto  = $rootScope.memelektita.kotizo;
+    if(!$rootScope.krommembrecoj) {
+      config.getConfig("idAldonaMembrecgrupo").then(function(response) {
+        $scope.idAldonaMembrecgrupo = response.data.idAldonaMembrecgrupo;
+        membrigxiService.getGrupKat($scope.idAldonaMembrecgrupo).then(function(response) {
+          $rootScope.krommembrecoj = response.data;
+          for(var i = 0; i < $rootScope.krommembrecoj.length; i++){
+            getKotizo($rootScope.krommembrecoj[i]);
+            $rootScope.krommembrecoj[i].elektita = false;
           }
-          getKotizo($rootScope.membrecgrupoj[i]);
-        }
+        }, error);
       }, error);
-    }, error);
+    } else {
+      for(var i = 0; i < $rootScope.krommembrecoj.length; i++){
+        getKotizo($rootScope.krommembrecoj[i]);
+      }
+    }
+
+    if(!$rootScope.membrecgrupoj) {
+      config.getConfig("idMembrecgrupo").then(function(response) {
+        $scope.idMembrecgrupo = response.data.idMembrecgrupo;
+        membrigxiService.getGrupKat($scope.idMembrecgrupo).then(function(response) {
+          $rootScope.membrecgrupoj = response.data;
+          for(var i = 0; i < $rootScope.membrecgrupoj.length; i++){
+            if($rootScope.membrecgrupoj[i].nomo.toLowerCase().indexOf("ret") > -1) {
+              $rootScope.retmembreco = $rootScope.membrecgrupoj[i];
+            }
+            getKotizo($rootScope.membrecgrupoj[i]);
+          }
+        }, error);
+      }, error);
+    } else {
+      for(var i = 0; i < $rootScope.membrecgrupoj.length; i++){
+        getKotizo($rootScope.membrecgrupoj[i]);
+      }
+    }
+
+    $scope.updateEntuto();
  }
 
  $scope.updateEntuto = function() {
    $rootScope.entuto = 0;
-
    for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
      if($rootScope.krommembrecoj[i].elektita) {
        if($rootScope.tejoagxo) {
@@ -107,6 +119,7 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
  }
 
  $scope.petiRabaton = function(novaValoro) {
+   $scope.novkotizo = novaValoro;
    if(novaValoro) {
      var sepdekEntuto = $rootScope.entuto * 0.7;
      if(novaValoro < sepdekEntuto) {
