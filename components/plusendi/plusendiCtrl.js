@@ -119,7 +119,6 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q,
 
   $scope.registriMembrecojn = function(id) {
       var promises = [];
-
       if(id) {
         $scope.datumoj.idAno = id;
       }
