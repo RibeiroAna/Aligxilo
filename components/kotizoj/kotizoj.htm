@@ -1,0 +1,31 @@
+<div class="kotizoj" data-ng-init="init()">
+  <h4>
+    Vidante kotizojn por {{lando.radikoEo}}{{lando.finajxoEo}}
+    <img src="{{landInformoj.flag}}" alt="flago" width="25"></img>
+    <a href="" ng-click="lando=null" ng-show="lando">Ŝanĝi landon</a>
+    <select ng-hide="lando"
+            ng-change="gxisdatigiLandon()"
+            class="form-control"
+            ng-model="lando"
+            ng-options="(l.radikoEo + l.finajxoEo) for l in landoj |
+                        orderBy:'radikoEo'" required>
+    </select>
+  </h4>
+  <ul ng-repeat="membrecgrupo in membrecgrupoj">
+    <li>
+      <b>{{membrecgrupo.nomo}}: </b> {{membrecgrupo.priskribo}} <b>{{membrecgrupo.kotizo}}</b> {{lando.valuto}}
+    </li>
+  </ul>
+  <ul ng-repeat="krommembrecgrupo in krommembrecoj">
+    <li>
+      <b>{{krommembrecgrupo.nomo}}: </b> {{krommembrecgrupo.priskribo}} <b>{{krommembrecgrupo.kotizo}}</b> {{lando.valuto}}
+    </li>
+  </ul>
+
+  <a type="button"
+     name="malantauxa"
+     href="#!/"
+     class="btn btn-outline-rounded btn-default">
+      Reveni al la aliĝilo
+  </a>
+</div>
