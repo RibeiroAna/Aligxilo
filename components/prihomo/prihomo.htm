@@ -1,22 +1,51 @@
-<form name="prihomo" data-ng-init="init()">
+<div class="alert alert-danger alert-dismissable" id="eraro"
+      ng-show="irita && prihomo.$invalid">
+  Estas eraroj en la aliĝilo
+</div>
 
-  <div class="alert alert-danger alert-dismissable" id="eraro"
-        ng-show="irita && prihomo.$invalid">
-    Estas eraroj en la aliĝilo
-  </div>
-  <h3 class="col-md-12">Pri vi...</h3>
-    <ul>
-        <li>
-          <a href="#!form/kotizoj">Mi deziras nur konsulti kotizojn</a>
-        </li>
-        <li>
-          <a ng-click="montriDetalojn($event, '#ensaluti')" href="">UEA jam havas miajn datumojn</a>
-        </li>
-    </ul>
+<div class="alert alert-success" ng-show="malkovrita">
+    Ni sukcesis retrovi viajn datumojn. Se iu ne ŝajnas korekta, skribu al <b>sekretario@co.uea.org</b>
+    aŭ ŝanĝu ilin en reta membrospaco.
+</div>
+<h3 class="col-md-12">Pri vi...</h3>
+<ul>
+    <li>
+      <a href="#!form/kotizoj">Mi deziras nur konsulti kotizojn</a>
+    </li>
+    <li>
+      <a ng-click="ensalutado = !ensalutado" href="">UEA jam havas miajn datumojn</a>
+    </li>
+</ul>
+<div class="ensaluti" ng-show="ensalutado == true">
+  <b>Ensalutu por retrovi viajn datumojn: </b>
+  (se via lasta aliĝo estis de antaŭ ol pli 3 jaroj, eble UEA ne plu havas viajn datumojn)
+  <a ng-click="ensalutado = !ensalutado" href="" style="float:right">[fermi ensalutilon]</a>
+  <form class="form-inline" style="margin:12px">
+    <div class="form-group">
+      <label for="email">Salutvorto:</label>
+      <input type="text" class="form-control" ng-model="u.uzantnomo">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Pasvorto:</label>
+      <input type="password" class="form-control" ng-model="u.pasvorto">
+    </div>
+    <button type="submit" class="btn btn-default" ng-click="ensaluti()">Ensaluti</button>
+  </form>
+  Se vi forgesis vian pasvorton, restarigu ĝin en la
+  <a href="{{membrospaco_url}}" target="_blank">
+    reta membrospaco
+  </a>
+  <p>
+    Se vi ne sukcesas ensaluti pro iu alia kialo, skribu al <b>info@uea.org</b>
+</p>
+</div>
+
+<form name="prihomo" data-ng-init="init()">
     <div class="col-md-12">
+      <p class="col-md-12">Kampoj markitaj kun * estas devigaj</p>
       <div class="form-group col-md-4">
         <label for="jaro">Titolo</label>
-        <select class="form-control" ng-model="uzanto.titolo">
+        <select class="form-control" ng-model="uzanto.titolo" ng-disabled="malkovrita">
           <option value="S-ro">Sinjoro</option>
           <option value="S-rino">Sinjorino</option>
 
@@ -43,7 +72,7 @@
         <input type='text'
                class="form-control"
                name="personanomo"
-               ng-model="uzanto.personanomo" required>
+               ng-model="uzanto.personanomo" required ng-disabled="malkovrita">
            <div class="help-block" ng-messages="prihomo.personanomo.$error"
                 ng-show="prihomo.personanomo.$touched || irita">
               <div ng-messages-include="config/messages.html"></div>
@@ -56,7 +85,7 @@
         <input type="text"
                class="form-control"
                ng-model="uzanto.familianomo"
-               name="familianomo" required>
+               name="familianomo" required ng-disabled="malkovrita">
         <div class="help-block"
              ng-messages="prihomo.familianomo.$error"
              ng-show="prihomo.familianomo.$touched || irita">
@@ -75,7 +104,7 @@
                ng-model="uzanto.naskigxtagoSenFormo"
                name="naskigxitago"
                placeholder="TT/MM/JJJJ"
-               ui-mask="99/99/9999" ui-mask-placeholder required>
+               ui-mask="99/99/9999" ui-mask-placeholder required ng-disabled="malkovrita">
           <div class="help-block"
                ng-messages="prihomo.naskigxitago.$error"
                ng-show="prihomo.naskigxitago.$touched || irita">
@@ -94,7 +123,7 @@
         <textarea class="form-control"
                   rows="5"
                   name="adreso"
-                  ng-model="uzanto.adreso" required></textarea>
+                  ng-model="uzanto.adreso" required ng-disabled="malkovrita"></textarea>
         <p>Ĝi estas bezonata por fari fakturojn kaj por eventuale sendi
           aferojn, kaze vi mendos kelkajn el niaj revuoj kaj eldonaĵoj.</p>
         <div class="help-block"
@@ -110,7 +139,7 @@
         <input type="text"
                class="form-control"
                name="posxtkodo"
-               ng-model="uzanto.posxtkodo" required>
+               ng-model="uzanto.posxtkodo" required ng-disabled="malkovrita">
          <div class="help-block"
               ng-messages="prihomo.posxtkodo.$error"
               ng-show="prihomo.posxtkodo.$touched || irita">
@@ -128,7 +157,7 @@
                   ng-change="gxisdatigiLandon()"
                   class="form-control"
                   ng-model="uzanto.lando"
-                  ng-options="(l.radikoEo + l.finajxoEo) for l in landoj | localeOrderBy:'radikoEo'" required>
+                  ng-options="(l.radikoEo + l.finajxoEo) for l in landoj | localeOrderBy:'radikoEo'" required ng-disabled="malkovrita">
           </select>
       </div>
     </div>
@@ -143,7 +172,7 @@
           <input type="telephone"
           id = "posxtelefono"
           class="form-control"
-          ng-model="uzanto.telportebla">
+          ng-model="uzanto.telportebla" ng-disabled="malkovrita">
         </div>
       </div>
 
@@ -154,7 +183,7 @@
           <input type="telephone"
           id = "hejmtelefono"
           class="form-control"
-          ng-model="uzanto.telhejmo">
+          ng-model="uzanto.telhejmo" ng-disabled="malkovrita">
         </div>
       </div>
 
@@ -165,22 +194,22 @@
           <input type="telephone"
           id = "telofciejo"
           class="form-control"
-          ng-model="uzanto.teloficejo">
+          ng-model="uzanto.teloficejo" ng-disabled="malkovrita">
         </div>
       </div>
     </div>
 
-    <div class="membrspaco col-md-12"
-         ng-if="membrspaco">
+    <div class="membrspaco col-md-12">
+      <h3>Por aliri al via reta membrospaco</h3>
         <div class="col-md-6"
              ng-class="{'has-error': (prihomo.retposxto.$touched || irita) && prihomo.retposxto.$invalid }">
-          <label for="retposxto"> Via retadreso*</label>
+          <label for="retposxto"> Via retadreso</label>
           <input type="email"
                   id="retposxto"
                   ng-change="prihomo.retposxto.$error = {}"
                   name="retposxto"
                   class="form-control"
-                  ng-model="uzanto.retposxto" required>
+                  ng-model="uzanto.retposxto" ng-disabled="malkovrita">
           <div class="help-block"
                 ng-messages="prihomo.retposxto.$error"
                 ng-show="prihomo.retposxto.$touched || irita">
@@ -191,13 +220,13 @@
         <div class="form-group col-md-6"
              ng-init="pasvorto=false"
              ng-class="{'has-error': (prihomo.pasvorto.$touched || irita) && prihomo.pasvorto.$invalid }">
-          <label for="pasvorto"> Via pasvorto*</label>
+          <label for="pasvorto"> Via pasvorto</label>
           <input ng-attr-type="{{pasvorto?'text':'password'}}"
                  id="pasvorto"
                  name="pasvorto"
                  minlength=6
                  ng-model="uzanto.pasvorto"
-                 class="form-control" required>
+                 class="form-control" ng-disabled="malkovrita">
           <div class="help-block"
                 ng-messages="prihomo.pasvorto.$error"
                 ng-show="prihomo.pasvorto.$touched || irita">

@@ -5,6 +5,8 @@ app.service('prihomoService', function ($http, config) {
     service.getIpapi = getIpapi;
     service.getInfoPriLanda = getInfoPriLanda;
     service.getEkzistantaRetposxto = getEkzistantaRetposxto;
+    service.doEnsaluti = doEnsaluti;
+    service.getUzanto = getUzanto;
 
     function getLandoj() {
         return $http.get(config.api_url + "/landoj");
@@ -20,6 +22,19 @@ app.service('prihomoService', function ($http, config) {
 
     function getEkzistantaRetposxto(data) {
       return $http.get(config.api_url + "/uzantoj/cxuMembro/" + data);
+    }
+
+    function doEnsaluti(data){
+        return $http.post(config.api_url + '/uzantoj/ensaluti', data);
+    }
+
+    function getUzanto(id, token) {
+        var req = {
+            method: 'GET',
+            url: config.api_url + '/uzantoj/' + id,
+            headers: {'x-access-token': token}
+        };
+        return $http(req);
     }
 
     return service;

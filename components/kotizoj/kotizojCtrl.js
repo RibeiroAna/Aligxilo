@@ -5,12 +5,11 @@ app.controller("kotizojCtrl", function ($scope, $rootScope, $window, config,
     prihomoService.getLandoj().then(function(response) {
       $scope.landoj = response.data;
     });
-
-    var katA = getKategorioj("idAldonaMembrecgrupo");
-    var katB = getKategorioj("idMembrecgrupo");
+    
+    var katA = getKategorioj("idMembrecgrupo");
+    var katB = getKategorioj("idAldonaMembrecgrupo");
     Promise.all([katA, katB]).then(function(values){
       $scope.kategorioj = values[0].concat(values[1]);
-      console.log($scope.kategorioj);
     });
 
     function getKategorioj(nomo){
