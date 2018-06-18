@@ -1,0 +1,37 @@
+<div class="kotizoj" data-ng-init="init()">
+  <h1 class="col-md-12">
+    Kotiztabelo
+    <a href="#!/">
+      Reveni al la aliĝilo
+    </a>
+  </h1>
+
+  <p class="col-md-12">
+    Niaj kotizoj ŝanĝas laŭ lande kaj laŭ kategorio. Bonvole, kontrolu en la onta tabelo: 
+  </p>
+
+  <div class="progress progress-striped active" ng-if="!kategorioj">
+      <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+          Ŝargas
+
+      </div>
+    </div>
+  <table class="table table-striped" ng-if="kategorioj">
+    <thead>
+      <tr>
+        <td>Landoj/kategorioj</td>
+        <td ng-repeat="kategorio in kategorioj">
+          {{kategorio.nomo}}
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="lando in landoj | localeOrderBy:'radikoEo'">
+        <td>{{lando.radikoEo}}</td>
+        <td ng-repeat="kategorio in kategorioj">
+            {{kategorio.kotizoj[lando.id]/100 || 0}} {{lando.valuto}}
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

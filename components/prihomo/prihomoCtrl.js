@@ -10,7 +10,7 @@ app.controller("prihomoCtrl", function ($scope, $rootScope, $window, $http, prih
         $scope.landoj = response.data;
 
         var successIpapi = function(response) {
-            var landkodo = response.data.country;
+            var landkodo = response.data.country.toLowerCase();
 
             prihomoService.getInfoPriLanda(landkodo).then(function(response){
               $rootScope.landInformoj = response.data;

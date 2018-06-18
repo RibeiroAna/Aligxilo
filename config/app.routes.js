@@ -26,4 +26,9 @@ angular.module('formularoj').config(function($stateProvider, $urlRouterProvider)
             templateUrl: "components/plusendi/plusendi.htm",
             controller: "plusendiCtrl"
         })
+        .state("form.kotizoj", {
+            url: "/kotizoj",
+            templateUrl: "components/kotizoj/kotizoj.htm",
+            controller: "kotizojCtrl"
+        });
 });

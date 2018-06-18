@@ -5,6 +5,14 @@
     Estas eraroj en la aliĝilo
   </div>
   <h3 class="col-md-12">Pri vi...</h3>
+    <ul>
+        <li>
+          <a href="#!form/kotizoj">Mi deziras nur konsulti kotizojn</a>
+        </li>
+        <li>
+          <a ng-click="montriDetalojn($event, '#ensaluti')" href="">UEA jam havas miajn datumojn</a>
+        </li>
+    </ul>
     <div class="col-md-12">
       <div class="form-group col-md-4">
         <label for="jaro">Titolo</label>
@@ -120,8 +128,7 @@
                   ng-change="gxisdatigiLandon()"
                   class="form-control"
                   ng-model="uzanto.lando"
-                  ng-options="(l.radikoEo + l.finajxoEo) for l in landoj |
-                              orderBy:'radikoEo'" required>
+                  ng-options="(l.radikoEo + l.finajxoEo) for l in landoj | localeOrderBy:'radikoEo'" required>
           </select>
       </div>
     </div>
@@ -163,16 +170,8 @@
       </div>
     </div>
 
-      <h3 class="col-md-12">Por aliri al via reta membrspaco</h3>
-
-      <label class="checkbox-inline col-md-12">
-        <input type="checkbox" ng-init="membrspaco=true"
-               ng-click="membrspaco = !membrspaco">
-          Mi <b>NE</b> volas aliron al la reta membrspaco.
-      </label>
-
-      <div class="membrspaco col-md-12"
-           ng-if="membrspaco">
+    <div class="membrspaco col-md-12"
+         ng-if="membrspaco">
         <div class="col-md-6"
              ng-class="{'has-error': (prihomo.retposxto.$touched || irita) && prihomo.retposxto.$invalid }">
           <label for="retposxto"> Via retadreso*</label>
@@ -215,7 +214,7 @@
               name="malantauxa"
               ng-click="elPriUzanto()"
               class="btn btn-outline-rounded btn-default">
-          Malantaŭa
+          Sekva
         <span style="margin-left:10px;"
               class="glyphicon glyphicon-arrow-right"></span></a>
       </button>
