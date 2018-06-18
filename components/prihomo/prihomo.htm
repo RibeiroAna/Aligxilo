@@ -20,6 +20,11 @@
   <b>Ensalutu por retrovi viajn datumojn: </b>
   (se via lasta aliĝo estis de antaŭ ol pli 3 jaroj, eble UEA ne plu havas viajn datumojn)
   <a ng-click="ensalutado = !ensalutado" href="" style="float:right">[fermi ensalutilon]</a>
+
+  <div class="alert alert-danger alert-dismissable" id="eraro"
+      ng-show="msg">
+    {{msg}}
+  </div>
   <form class="form-inline" style="margin:12px">
     <div class="form-group">
       <label for="email">Salutvorto:</label>

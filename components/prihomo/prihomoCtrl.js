@@ -37,17 +37,19 @@ app.controller("prihomoCtrl", function ($scope, $rootScope, $window, $http, prih
     };
 
     $scope.ensaluti = function() {
+      $scope.msg = null;
       prihomoService.doEnsaluti($scope.u).then(function(response) {
         prihomoService.getUzanto(response.data.uzanto.id, response.data.token).then(
           function(response) {
               $scope.uzanto = response.data[0];
               var nt = $scope.uzanto.naskigxtago.slice(0, 10);
               $scope.uzanto.naskigxtagoSenFormo = nt[8] + nt[9] + nt[5] + nt[6] + nt[0] + nt[1] + nt[2] + nt[3];
-              $scope.malkovrita = true;
+              $rootScope.malkovrita = true;
               $scope.uzanto.pasvorto = $scope.u.pasvorto;
               for(var i = 0; i < $scope.landoj.length; i++) {
                 if($scope.landoj[i].id == $scope.uzanto.idLando) {
                   $scope.uzanto.lando = $scope.landoj[i];
+                  console.log($scope.uzanto);
                   $scope.gxisdatigiLandon();
                   break;
                 }

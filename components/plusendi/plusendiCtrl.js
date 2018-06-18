@@ -1,6 +1,5 @@
-app.controller("plusendiCtrl", function ($scope, $rootScope, $q,
-                                         $window, $http, config,
-                                         plusendiService) {
+app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window, 
+  $http, config, plusendiService) {
 
   $scope.init = function() {
       if(!$rootScope.valuto) {
@@ -140,6 +139,7 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q,
   $scope.plusendi = function() {
     //Kreas uzanton kaze ĝi ne ekzistas
     if($scope.pagmaniero.$valid) {
+      console.log($rootScope.uzanto);
       if(!$rootScope.uzanto.id) {
         $rootScope.uzanto.uzantnomo =  $rootScope.uzanto.retposxto;
         $rootScope.uzanto.idLando = $rootScope.uzanto.lando.id;
@@ -154,7 +154,9 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q,
           plusendiService.postUzanto($rootScope.uzanto).then(success, error);
 
       } else {
-        $scope.registriMembrecojn($rootScope.uzanto.id);
+        $scope.datumoj.idAno = $rootScope.uzanto.id;
+        $scope.financajObservoj();
+        $scope.registriMembrecojn();
       }
     }
 }
