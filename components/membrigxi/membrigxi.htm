@@ -54,7 +54,6 @@
          ng-repeat="krom in krommembrecoj">
         <label>
           <input type="checkbox"
-                 ng-init="krom.elektita=false"
                  ng-model="krom.elektita"
                  ng-change="updateEntuto();">
           <b>{{krom.nomo}}:</b> {{krom.priskribo}}
@@ -67,19 +66,19 @@
     </div>
   </div>
 
-   <h2 align="center" ng-show="!novkotizo || novkotizo == entuto || memelektita != retmembreco">
+   <h2 align="center" ng-show="!novkotizo || novkotizo == entuto">
       Entuto: {{entuto}} {{valuto}}
    </h2>
 
-    <h2 ng-show="(novkotizo > -1 && novkotizo != entuto && memelektita == retmembreco)" align="center">
+    <h2 ng-show="(novkotizo > -1 && novkotizo != entuto)" align="center">
        Entuto: <strike>{{entuto}} {{valuto}}</strike>... {{novkotizo}} {{valuto}}
     </h2>
 
-  <p align="center" ng-show="memelektita == retmembreco">
+  <p align="center">
      <a data-title="Enmetu kiom vi povas pagi"
         href=""
-        editable-number = "novkotizo"
-        onaftersave = "petiRabaton($data)"
+        editable-text = "novkotizo"
+        onbeforesave = "petiRabaton($data)"
         e-min = "0"
         e-label="Tajpu kiom vi povas pagi:"
         e-step = "any">
@@ -87,7 +86,7 @@
     </a>
    </p>
 
-  <div class="form-group col-md-12" ng-show="kanuto && memelektita == retmembreco">
+  <div class="form-group col-md-12" ng-show="kanuto">
    <label for="komento">
      Vi petas rabaton pli granda ol 30%. Nia organizo havas tre limigitajn
      subvenciojn por membrado. Kial vi kredas ke vi meritas ricevi

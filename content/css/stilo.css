@@ -10,6 +10,20 @@ body {
   color:black;
 }
 
+._md ._md-toolbar-transitions {
+  background-color: #3d3d3d;
+  color: white;
+  height: 30px;
+}
+
+md-input-container.md-block {
+  height: 25px;
+}
+
+.kotizoj {
+  padding-left: 25%;
+}
+
 .popover {
   display: none;
 }

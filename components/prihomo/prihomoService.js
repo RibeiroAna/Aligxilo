@@ -4,6 +4,7 @@ app.service('prihomoService', function ($http, config) {
     service.getLandoj = getLandoj;
     service.getIpapi = getIpapi;
     service.getInfoPriLanda = getInfoPriLanda;
+    service.doEnsaluti = doEnsaluti;
     service.getEkzistantaRetposxto = getEkzistantaRetposxto;
     service.doEnsaluti = doEnsaluti;
     service.getUzanto = getUzanto;
@@ -11,6 +12,10 @@ app.service('prihomoService', function ($http, config) {
     function getLandoj() {
         return $http.get(config.api_url + "/landoj");
     };
+
+    function doEnsaluti(data){
+  		return $http.post(config.api_url + '/uzantoj/ensaluti', data);
+  	}
 
     function getInfoPriLanda(landkodo) {
        return $http.get("https://restcountries.eu/rest/v2/alpha/" + landkodo);

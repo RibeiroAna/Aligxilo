@@ -61,7 +61,9 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
                   " " +  $rootScope.uzanto.familianomo + " " +
                   $rootScope.uzanto.retposxto;
     observo += "<br>Ĉiuj valoroj estas en " + $rootScope.valuto + "<br>";
-    observo += "<b>Baza membreco elektita: </b>" + $rootScope.memelektita.nomo;
+    if($rootScope.memelektita) {
+      observo += "<b>Baza membreco elektita: </b>" + $rootScope.memelektita.nomo;
+    }
 
     if($rootScope.kanuto) {
       observo += "La homo kandidatiĝis por ricevi subvencion. Klarigoj: ";
@@ -114,20 +116,29 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
       $window.location.href = '#!/form/membrigxi';
   };
 
-  $scope.registriMembrecojn = function() {
+  $scope.registriMembrecojn = function(id) {
       var promises = [];
-      promises.push(
-              plusendiService.postMembreco($rootScope.memelektita.id,
-                                           $scope.datumoj));
-      if($rootScope.krommem){
-        for(var i = 0; i < $rootScope.krommem.length; i++) {
-          if($rootScope.krommem[i]) {
+      if(id) {
+        $scope.datumoj.idAno = id;
+      }
+
+      if($rootScope.memelektita) {
+        promises.push(
+          plusendiService.postMembreco($rootScope.memelektita.id,
+            $scope.datumoj));
+      }
+
+      if($rootScope.krommembrecoj){
+        for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
+          if($rootScope.krommembrecoj[i]) {
              promises.push(
                      plusendiService.postMembreco($rootScope.krommembrecoj[i].id,
                                                   $scope.datumoj));
           }
         }
       }
+
+      console.log("a", promises);
 
      $q.all(promises).then(function(success) {
          window.alert("Dankon, via aliĝo estis registrita");
@@ -143,7 +154,6 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
       if(!$rootScope.uzanto.id) {
         $rootScope.uzanto.uzantnomo =  $rootScope.uzanto.retposxto;
         $rootScope.uzanto.idLando = $rootScope.uzanto.lando.id;
-
           var success = function (response) {
               $rootScope.uzanto.id = response.data.id;
               $scope.datumoj.idAno = response.data.id;
