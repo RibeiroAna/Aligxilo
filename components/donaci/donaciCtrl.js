@@ -2,6 +2,10 @@
 
    $scope.init = function() {
      $scope.montritajFondajxoj = 5;
+     if(!$rootScope.entuto) {
+      $window.location.href = '#!/form/membrigxi';
+      $window.location.reload();
+    }
      //En perfekta sistemo, tio venus el financa datumbazo
      if(!$rootScope.fondajxoj) {
        $rootScope.fondajxoj =

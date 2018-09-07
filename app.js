@@ -1,4 +1,4 @@
-var app = angular.module("formularoj", ["ui.router", "ui.mask", "xeditable", "ngMessages"])
+var app = angular.module("formularoj", ["ui.router", "ui.mask", "xeditable", "ngMessages", "ngMaterial"])
   .filter("localeOrderBy", [function () {
     return function (array, sortPredicate, reverseOrder) {
         if (!Array.isArray(array)) return array;

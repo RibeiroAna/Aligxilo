@@ -10,9 +10,6 @@
 <h3 class="col-md-12">Pri vi...</h3>
 <ul>
     <li>
-      <a href="#!form/kotizoj">Mi deziras nur konsulti kotizojn</a>
-    </li>
-    <li>
       <a ng-click="ensalutado = !ensalutado" href="">UEA jam havas miajn datumojn</a>
     </li>
 </ul>
@@ -65,7 +62,7 @@
 
           <option value="Pastro">Pastro</option>
           <option value="Pastrino">Pastrino</option>
-          <option value="Alia">Alia (ne aplikebla)</option>
+          <option value="">Alia (ne aplikebla)</option>
         </select>
       </div>
     </div>
@@ -96,25 +93,6 @@
              ng-show="prihomo.familianomo.$touched || irita">
            <div ng-messages-include="config/messages.html"></div>
         </div>
-      </div>
-    </div>
-
-    <div class="col-md-12"
-         ng-class="{'has-error': (prihomo.naskigxitago.$touched || irita) && prihomo.naskigxitago.$invalid }">
-      <div class="form-group col-md-4">
-        <label>Naskiĝidato* (TT/MM/JJJJ)</label>
-        <input type="text"
-               name="naskigxitago"
-               class="form-control"
-               ng-model="uzanto.naskigxtagoSenFormo"
-               name="naskigxitago"
-               placeholder="TT/MM/JJJJ"
-               ui-mask="99/99/9999" ui-mask-placeholder required ng-disabled="malkovrita">
-          <div class="help-block"
-               ng-messages="prihomo.naskigxitago.$error"
-               ng-show="prihomo.naskigxitago.$touched || irita">
-            <div ng-messages-include="config/messages.html"></div>
-          </div>
       </div>
     </div>
 
@@ -153,17 +131,10 @@
       </div>
 
       <div class="form-group col-md-6">
-        <label>Loĝlando*</label>
+        <label>Loĝlando:</label>
         <br>
           <img src="{{landInformoj.flag}}" alt="flago" width="20"></img>
           {{uzanto.lando.radikoEo + uzanto.lando.finajxoEo}}
-          <a href="" ng-click="uzanto.lando=null" ng-show="uzanto.lando"> redakti </a>
-          <select ng-hide="uzanto.lando"
-                  ng-change="gxisdatigiLandon()"
-                  class="form-control"
-                  ng-model="uzanto.lando"
-                  ng-options="(l.radikoEo + l.finajxoEo) for l in landoj | localeOrderBy:'radikoEo'" required ng-disabled="malkovrita">
-          </select>
       </div>
     </div>
 
@@ -208,13 +179,14 @@
       <h3>Por aliri al via reta membrospaco</h3>
         <div class="col-md-6"
              ng-class="{'has-error': (prihomo.retposxto.$touched || irita) && prihomo.retposxto.$invalid }">
-          <label for="retposxto"> Via retadreso</label>
+          <label for="retposxto"> Via retadreso*</label>
           <input type="email"
                   id="retposxto"
                   ng-change="prihomo.retposxto.$error = {}"
                   name="retposxto"
                   class="form-control"
-                  ng-model="uzanto.retposxto" ng-disabled="malkovrita">
+                  ng-model="uzanto.retposxto" 
+                  ng-disabled="malkovrita" required>
           <div class="help-block"
                 ng-messages="prihomo.retposxto.$error"
                 ng-show="prihomo.retposxto.$touched || irita">
@@ -225,13 +197,14 @@
         <div class="form-group col-md-6"
              ng-init="pasvorto=false"
              ng-class="{'has-error': (prihomo.pasvorto.$touched || irita) && prihomo.pasvorto.$invalid }">
-          <label for="pasvorto"> Via pasvorto</label>
+          <label for="pasvorto"> Via pasvorto*</label>
           <input ng-attr-type="{{pasvorto?'text':'password'}}"
                  id="pasvorto"
                  name="pasvorto"
                  minlength=6
                  ng-model="uzanto.pasvorto"
-                 class="form-control" ng-disabled="malkovrita">
+                 class="form-control" 
+                 ng-disabled="malkovrita" required>
           <div class="help-block"
                 ng-messages="prihomo.pasvorto.$error"
                 ng-show="prihomo.pasvorto.$touched || irita">
@@ -244,6 +217,10 @@
     </div>
 
     <div class="form-group text-center ">
+      <a ui-sref="form.membrigxi" class="btn btn-outline-rounded btn-default">
+            <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span>
+            Antaŭa
+      </a>
       <button type="button"
               name="malantauxa"
               ng-click="elPriUzanto()"

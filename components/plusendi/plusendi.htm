@@ -1,25 +1,22 @@
 <h3 data-ng-init="init()" class="col-md-12">Resumo de viaj mendoj</h3>
 <ul>
   <li>{{memelektita.nomo}}:
-      <b ng-if="!tejoagxo">{{memelektita.kotizo * (jaroj | number:0)}}</b>
-      <b ng-if="tejoagxo">{{(memelektita.kotizo - memelektita.junaRabato)*(jaroj | number:0)}}</b> {{valuto}}
+    {{r75 && jaroj == 1 && memelektita.id == 3}}
+      <b ng-if="(!r75 && !r50) || jaroj != 1 || memelektita.id != 3">{{memelektita.kotizo * (jaroj | number:0)}}</b> 
+      <b ng-if="r75 && jaroj == 1 && memelektita.id == 3">{{roundUp(memelektita.kotizo * 0.25)}}</b> 
+      <b ng-if="r50 && jaroj == 1 && memelektita.id == 3">{{roundUp(memelektita.kotizo * 0.5)}}</b> {{valuto}}
   </li>
   <li ng-repeat="krom in krommembrecoj" ng-show="krom.elektita">
     {{krom.nomo}}:
-      <b ng-if="!tejoagxo">{{krom.kotizo*(jaroj | number:0)}}</b>
-      <b ng-if="tejoagxo">{{(krom.kotizo - krom.junaRabato)*(jaroj | number:0)}}</b>
+      <b>{{krom.kotizo*(jaroj | number:0)}}</b>
     {{valuto}}
   </li>
   <li ng-repeat="fondajxo in fondajxoj" ng-show="fondajxo.donaco != 0">
     Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{valuto}}
   </li>
   <li>
-    <h4 ng-show="!novkotizo || novkotizo == entuto || memelektita != retmembreco">
+    <h4 ng-show="!novkotizo || novkotizo == entuto">
       Entuto: {{entuto + entutoDonaco}} {{valuto}}
-    </h4>
-    <h4 ng-show="novkotizo && memelektita == retmembreco">
-      Entuto: <strike>{{entuto + entutoDonaco}}</strike>
-      {{novkotizo + entutoDonaco}} {{valuto}}
     </h4>
   </li>
 </ul>
@@ -49,13 +46,13 @@
   <div class="col-md-12">
     <label>
       <input type="radio"
-              ng-model="pago"
-              ng-value="'kreditkarto'"
-              ng-click="pagdetaloj={}"
-              name="pagmaniero">
+             ng-model="pago"
+             ng-value="'kreditkarto'"
+             ng-click="pagdetaloj={}"
+             name="pagmaniero" disabled>
 
       <i class="fa fa-credit-card" aria-hidden="true"></i>
-      Kreditkarto
+      Kreditkarto (Ni ne ricevas per ĝi nun)
       <div ng-show="pago == 'kreditkarto'" class="kreditkarto">
         <label class="col-md-4">
          <input type="radio" value="American" name="kreditkarto"  ng-model="pagdetaloj.detalo">
@@ -174,7 +171,6 @@
        Peranto
     </label>
    <select class="form-control"
-           ng-click="pagdetaloj={}"
            ng-model="pagdetaloj"
            ng-show="pago =='peranto'"
            ng-options="(peranto.publikaNomo) for peranto in perantoj">

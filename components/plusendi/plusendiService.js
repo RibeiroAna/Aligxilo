@@ -5,6 +5,7 @@ app.service('plusendiService', function ($http, config) {
     service.postMesagxi = postMesagxi;
     service.postUzanto = postUzanto;
     service.postMembreco = postMembreco;
+    service.postGxirpropono = postGxirpropono;
 
     function getPerantoByLando(idLando) {
         return $http.get(config.api_url + "/perantoj?idLando=" + idLando);
@@ -20,6 +21,10 @@ app.service('plusendiService', function ($http, config) {
 
     function postMembreco(idGrupo, data) {
         return $http.post(config.api_url + '/grupoj/' + idGrupo + '/anoj', data);
+    }
+
+    function postGxirpropono (data) {
+
     }
 
     return service;

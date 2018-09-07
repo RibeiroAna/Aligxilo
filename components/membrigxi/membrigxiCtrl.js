@@ -1,34 +1,18 @@
-app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, membrigxiService) {
+app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, membrigxiService, prihomoService) {
 
   $scope.init = function () {
     $scope.jaro = parseInt((new Date()).getFullYear());
     $rootScope.entuto = 0;
     $rootScope.kanuto = false;
-
-    if($rootScope.kanutkialo){
-      $scope.kanutkialo = $rootScope.kanutkialo;
-      $rootScope.kanuto = true;
-    }
-
-    if($rootScope.novkotizo) {
-      $scope.novkotizo = $rootScope.novkotizo;
-    }
+    prihomoService.getLandoj().then(success, error);
+    $scope.jaroj = 1;
 
     if(!$rootScope.uzanto) {
-      $window.location.href = '#!/form/prihomo';
+      $rootScope.uzanto = {};
     }
-
-    var nt = $rootScope.uzanto.naskigxtagoSenFormo;
-    if(!nt) {
-      $window.location.href = '#!/form/prihomo';
-    } else{
-      var agxo = $scope.jaro - parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
-      config.getConfig("junaAgxo").then(function(response){
-          var tejoagxo = response.data.junaAgxo;
-          $rootScope.tejoagxo = (agxo < tejoagxo)? true: false;
-       });
+    if (!$rootScope.uzanto.naskigxtagoSenFormo) {
+      $rootScope.uzanto.naskigxtagoSenFormo = "19021980";
     }
-
     if(!$rootScope.jaroj) {
       $scope.jaroj = 1;
       $rootScope.jaroj = 1;
@@ -38,92 +22,136 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
       $scope.jaroj = $rootScope.jaroj;
     }
 
-    if(($rootScope.uzanto) && ($rootScope.uzanto.lando)) {
-        var idLando = $rootScope.uzanto.lando.id;
+    $scope.updateEntuto();
+  }
+
+  $scope.updateAgxo = function() {
+    var nt = $rootScope.uzanto.naskigxtagoSenFormo;
+    var agxo = $scope.jaro - parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
+    if(agxo <= 19) {
+      $rootScope.r75 = true;
+      $rootScope.r50 = false;
+    } else if (agxo <= 25) {
+      $rootScope.r75 = false;
+      $rootScope.r50 = true;
+    } else {
+      $rootScope.r75 = false;
+      $rootScope.r50 = false;
+    }
+  }
+
+  $scope.updateNeVolas = function() {
+    if($scope.neVolas) {
+      $rootScope.memelektita = null;
+      $scope.updateEntuto()
+    }
+  }
+
+  var error = function (err) {
+    console.log(err);
+  };
+
+  var success = function(response) {
+    $scope.landoj = response.data;
+
+    var successIpapi = function(response) {
+      var landkodo = response.data.country.toLowerCase();
+
+      prihomoService.getInfoPriLanda(landkodo).then(function(response){
+        $rootScope.landInformoj = response.data;
+      });
+
+      for(var i = 0; i < $scope.landoj.length; i++) {
+        if($scope.landoj[i].landkodo == landkodo) {
+            $rootScope.uzanto.lando = $scope.landoj[i];
+            $rootScope.uzanto = $scope.uzanto;
+            return;
+        }
+        $rootScope.uzanto.lando = $scope.landoj[i];
+        $rootScope.uzanto = $scope.uzanto;
         $rootScope.valuto = $rootScope.uzanto.lando.valuto;
+
+        config.getConfig("idAldonaMembrecgrupo").then(function(response) {
+          $scope.idAldonaMembrecgrupo = response.data.idAldonaMembrecgrupo;
+          membrigxiService.getGrupKat($scope.idAldonaMembrecgrupo).then(function(response) {
+            $rootScope.krommembrecoj = response.data;
+            for(var i = 0; i < $rootScope.krommembrecoj.length; i++){
+              getKotizo($rootScope.krommembrecoj[i]);
+            }
+          }, error);
+        }, error);
+    
+        config.getConfig("idMembrecgrupo").then(function(response) {
+          $scope.idMembrecgrupo = response.data.idMembrecgrupo;
+          membrigxiService.getGrupKat($scope.idMembrecgrupo).then(function(response) {
+            $rootScope.membrecgrupoj = response.data;
+            $rootScope.memelektita =  $rootScope.membrecgrupoj[0];
+            for(var i = 0; i < $rootScope.membrecgrupoj.length; i++){
+              getKotizo($rootScope.membrecgrupoj[i]);
+            }
+          }, error);
+        }, error);
+      }
     }
-
-    var error = function (err) {
-        console.log(err);
-    };
-
-    var getKotizo = function(elemento){
-      membrigxiService.getKotizo(elemento.id, $rootScope.uzanto.lando.id)
-      .then(function(response) {
-          elemento.kotizo = response.data[0].prezo/100;
-          elemento.junaRabato = response.data[0].junaRabato/100;
-          $scope.updateEntuto();
-      }, error);
+    if($rootScope.uzanto.lando) {
+      $rootScope.valuto = $rootScope.uzanto.lando.valuto;
+    } else {
+      prihomoService.getIpapi().then(successIpapi);
     }
+  }
 
-    config.getConfig("idAldonaMembrecgrupo").then(function(response) {
-      $scope.idAldonaMembrecgrupo = response.data.idAldonaMembrecgrupo;
-      membrigxiService.getGrupKat($scope.idAldonaMembrecgrupo).then(function(response) {
-        $rootScope.krommembrecoj = response.data;
-        for(var i = 0; i < $rootScope.krommembrecoj.length; i++){
-          getKotizo($rootScope.krommembrecoj[i]);
-        }
-      }, error);
-    }, error);
+  $scope.updateMem = function(mem) {
+    $rootScope.memelektita = mem;
+    $scope.updateEntuto();
+  }
 
-    config.getConfig("idMembrecgrupo").then(function(response) {
-      $scope.idMembrecgrupo = response.data.idMembrecgrupo;
-      membrigxiService.getGrupKat($scope.idMembrecgrupo).then(function(response) {
-        $rootScope.membrecgrupoj = response.data;
-        for(var i = 0; i < $rootScope.membrecgrupoj.length; i++){
-          if($rootScope.membrecgrupoj[i].nomo.toLowerCase().indexOf("ret") > -1) {
-            $rootScope.retmembreco = $rootScope.membrecgrupoj[i];
-            $rootScope.memelektita = $rootScope.retmembreco;
-            $rootScope.entuto  = $rootScope.memelektita.kotizo;
-          }
-          getKotizo($rootScope.membrecgrupoj[i]);
-        }
-      }, error);
+  $scope.gxisdatigiLandon = function() {
+    prihomoService.getInfoPriLanda($scope.uzanto.lando.landkodo).
+    then(function(response){
+      $rootScope.landInformoj = response.data;
+      for(var i = 0; i < $rootScope.membrecgrupoj.length; i++){
+        getKotizo($rootScope.membrecgrupoj[i]);
+      }
+      for(var i = 0; i < $rootScope.krommembrecoj.length; i++){
+        getKotizo($rootScope.krommembrecoj[i]);
+      }
+    });
+  };
+
+  var getKotizo = function(elemento){
+    membrigxiService.getKotizo(elemento.id, $rootScope.uzanto.lando.id)
+    .then(function(response) {
+        elemento.kotizo = response.data[0].prezo/100;
+        elemento.junaRabato = response.data[0].junaRabato/100;
+        $scope.updateEntuto();
     }, error);
- }
+  }
 
  $scope.updateEntuto = function() {
+  $scope.updateAgxo();
    $rootScope.entuto = 0;
-
    for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
      if($rootScope.krommembrecoj[i].elektita) {
-       if($rootScope.tejoagxo) {
-         $rootScope.entuto += $rootScope.krommembrecoj[i].kotizo -
-         $rootScope.krommembrecoj[i].junaRabato;
-       } else {
-          $rootScope.entuto += $rootScope.krommembrecoj[i].kotizo;
-       }
+      $rootScope.entuto += $rootScope.krommembrecoj[i].kotizo;
      }
    }
-
-   if($rootScope.tejoagxo) {
-       $rootScope.entuto += $scope.memelektita.kotizo - $scope.memelektita.junaRabato;
-     } else {
-       $rootScope.entuto += $scope.memelektita.kotizo;
-    }
-    $rootScope.entuto = $rootScope.entuto * Math.round($scope.jaroj);
-
-    $scope.petiRabaton($scope.novkotizo);
+   if($rootScope.r75 && $scope.jaroj == 1 && $rootScope.memelektita.id == 3) {
+     $rootScope.entuto += Math.ceil($rootScope.memelektita.kotizo * 0.25);
+   }
+   else if($rootScope.r50 && $scope.jaroj == 1 && $rootScope.memelektita.id == 3) {
+     $rootScope.entuto += Math.ceil($rootScope.memelektita.kotizo * 0.5);
+   } else {
+     $rootScope.entuto += $rootScope.memelektita.kotizo;
+   }
+   $rootScope.entuto = $rootScope.entuto * Math.round($scope.jaroj);
  }
 
- $scope.petiRabaton = function(novaValoro) {
-   if(novaValoro) {
-     var sepdekEntuto = $rootScope.entuto * 0.7;
-     if(novaValoro < sepdekEntuto) {
-       $rootScope.kanuto = true;
-     } else {
-       $rootScope.kanuto = false;
-     }
-     if(novaValoro == $rootScope.entuto) {
-       $scope.novkotizo = undefined;
-     }
-   }
+ $scope.roundUp = function(value) {
+    return Math.ceil(value);
  }
 
  $scope.$on("$destroy", function(){
      $rootScope.jaroj = $scope.jaroj;
-     $rootScope.kanutkialo = $scope.kanutkialo;
      $rootScope.memelektita = $scope.memelektita;
-     $rootScope.novkotizo = $scope.novkotizo;
  });
 });

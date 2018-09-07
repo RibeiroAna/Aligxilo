@@ -1,12 +1,12 @@
 angular.module('formularoj').config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/form/prihomo");
+    $urlRouterProvider.otherwise("/form/membrigxi");
 
     $stateProvider
         .state("form", {
             url: "/form",
             templateUrl: "components/form/form.htm"
         })
-        .state("form.prihomo", {
+        .state("form.x", {
             url: "/prihomo",
             templateUrl: "components/prihomo/prihomo.htm",
             controller: "prihomoCtrl"

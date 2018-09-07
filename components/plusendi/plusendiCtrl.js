@@ -37,6 +37,9 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
         findato = undefined;
         dumviva = true;
       }
+      if($rootScope.memelektita.id == 3) {
+
+      }
 
       //Enmetas en baza membreca grupo
       $scope.datumoj = {
@@ -72,8 +75,10 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
     for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
       if($rootScope.krommembrecoj[i].elektita) {
         observo += "-" + $rootScope.krommembrecoj[i].nomo + " prezo:";
-        if($rootScope.tejoagxo) {
-          observo += $rootScope.krommembrecoj[i].prezo - $rootScope.krommembrecoj[i].junaRabato + "<br>";
+        if(($rootScope.memelektita == 3) && ($rootScope.jaroj == 1) && ($rootScope.r75)) {
+          observo += Math.ceil($rootScope.krommembrecoj[i].prezo * 0.25) + "<br>";
+        } else if(($rootScope.memelektita == 3) && ($rootScope.jaroj == 1) && ($rootScope.r50)) {
+          observo += Math.ceil($rootScope.krommembrecoj[i].prezo * 0.5) + "<br>";
         } else {
           observo += $rootScope.krommembrecoj[i].prezo + "<br>";
         }
@@ -134,6 +139,10 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
          $window.location.href = '#!/form/membrigxi';
          $window.location.reload();
       }, error);
+  }
+
+  $scope.roundUp = function(value) {
+    return Math.ceil(value);
   }
 
   $scope.plusendi = function() {

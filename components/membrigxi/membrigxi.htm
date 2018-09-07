@@ -1,55 +1,94 @@
 <div class="container" data-ng-init="init()">
     <form>
       <h3 class="col-md-12">Membreco...</h3>
-      <label for="gxis">Vi membriĝas por... *</label>
-      <select class="form-control" ng-model="jaroj" ng-change="updateEntuto()">
-        <option ng-value="1">
-            Nur por la nuna jaro ({{jaro}})
-        </option>
-        <option ng-value="1.1">
-            Nur por la venonta jaro ({{jaro + 1}})
-        </option>
-        <option ng-value="2">
-            Tiu ĉi jaro kaj la venonta jaro ({{jaro}} kaj {{jaro + 1}})
-        </option>
-        <option ng-value="5">
-            ĝis {{jaro + 5}} (por 5 jaroj)
-        </option>
-        <option ng-value="25">
-          Dumvive
-        </option>
-      </select>
+      <p>
+        La kotizo por membriĝi en UEA povas ŝanĝi laŭ lando, laŭ membrectempo kaj laŭ aĝo. 
+        Bonvole, informu tion unue. 
+      </p>
 
-  <div class="form-group col-md-12">
-    <h4><b>Vi membriĝas je la kategorio...</b></h4>
-      <div class="radio"
-           ng-repeat="mem in membrecgrupoj">
-          <label>
-            <input type="radio"
-                   ng-model="$parent.memelektita"
-                   ng-value="mem"
-                   ng-change="updateEntuto()"
-                   name="kategorio">
-            <b ng-show="mem == retmembreco" style="color:#F7B733">
-              <i class="fa fa-star" aria-hidden="true"></i>
-            </b>
-            <b>{{mem.nomo}}:</b> {{mem.priskribo}}
-            <b>kotizo:</b>
-            <b ng-if="!tejoagxo">{{(jaroj | number:0) * mem.kotizo}}</b>
-            <b ng-if="tejoagxo">{{(jaroj | number:0) * (mem.kotizo - mem.junaRabato)}}</b>
-            {{valuto}}
-
-            <span ng-show="mem == retmembreco" class="noto">
-              <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-              Baldaŭ tiu estos la nura elektebla kategorio, ni forte rekomendas membriĝi je ĝi
-            </span>
-          </label>
+      <div class="form-group col-md-4" >
+          <label>Loĝlando*</label>
+          <br>
+            <img src="{{landInformoj.flag}}" alt="flago" width="20">
+            {{uzanto.lando.radikoEo + uzanto.lando.finajxoEo}}
+            <a href="" ng-click="uzanto.lando=null" ng-show="uzanto.lando"> redakti </a>
+            <select ng-hide="uzanto.lando"
+                    ng-change="gxisdatigiLandon()"
+                    class="form-control"
+                    ng-model="uzanto.lando"
+                    ng-options="(l.radikoEo + l.finajxoEo) for l in landoj | localeOrderBy:'radikoEo'" required ng-disabled="malkovrita">
+            </select>
       </div>
+      <div class="col-md-4"
+           ng-class="{'has-error': (prihomo.naskigxitago.$touched || irita) && prihomo.naskigxitago.$invalid }">
+        <div class="form-group col-md-6">
+          <label>Naskiĝidato*</label>
+          <!-- <p>{{uzanto.naskigxtagoSenFormo[0]}}{{uzanto.naskigxtagoSenFormo[1]}}/{{uzanto.naskigxtagoSenFormo[2]}}{{uzanto.naskigxtagoSenFormo[3]}}/{{uzanto.naskigxtagoSenFormo[4]}}{{uzanto.naskigxtagoSenFormo[5]}}{{uzanto.naskigxtagoSenFormo[6]}}{{uzanto.naskigxtagoSenFormo[7]}}</p> -->
+          <input type="text"
+                  name="naskigxitago"
+                  ng-blur="updateEntuto()"
+                  class="form-control"
+                  ng-model="uzanto.naskigxtagoSenFormo"
+                  name="naskigxitago"
+                  size="23"
+                  placeholder="TT/MM/JJJJ"
+                  ui-mask="99/99/9999" ui-mask-placeholder required ng-disabled="malkovrita">
+          <div class="help-block"
+              ng-messages="prihomo.naskigxitago.$error"
+              ng-show="prihomo.naskigxitago.$touched || irita">
+          <div ng-messages-include="config/messages.html"></div>
+        </div>
+            <!--ng-hide="uzanto.naskigxtagoSenFormo || redaktiNG" -->
+            <div class="help-block">
+              TT/MM/JJJJ
+            </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label for="gxis">Vi membriĝas por... *</label>
+        <select class="form-control" ng-model="jaroj" ng-change="updateEntuto()">
+          <option ng-value="1">
+              La nuna jaro ({{jaro}})
+          </option>
+          <option ng-value="1.1">
+              La venonta jaro ({{jaro + 1}})
+          </option>
+          <option ng-value="2">
+              Tiu ĉi jaro kaj la venonta jaro ({{jaro}} kaj {{jaro + 1}})
+          </option>
+          <option ng-value="5">
+              ĝis {{jaro + 5}} (por 5 jaroj)
+          </option>
+          <option ng-value="30">
+            Dumvive
+          </option>
+        </select>
+    </div>
+  <div class="form-group col-md-12">
+  <h4><b>Vi membriĝas je la kategorio...</b></h4>
+  <div class='md-padding' layout="row" layout-wrap>
+    <md-card ng-repeat="mem in membrecgrupoj" class="col-md-5" ng-class="{'elektita': memelektita == mem}">
+      <md-card-title>
+        <md-card-title-text>
+          <h3>{{mem.nomo}}</h3>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <h3 style="color:gray" ng-show="memelektita == mem">Tiu kategorio estis elektita</h3>
+        {{mem.priskribo}}
+        <h4 ng-if="(!r75 && !r50) || jaroj != 1 || mem.id != 3">Kotizo: {{(jaroj | number:0) * mem.kotizo}} {{valuto}}</h4>
+        <h4 ng-if="r75 && jaroj == 1 && mem.id == 3">Kotizo: {{roundUp(mem.kotizo * 0.25)}} {{valuto}}</h4>
+        <h4 ng-if="r50 && jaroj == 1 && mem.id == 3">Kotizo: {{roundUp(mem.kotizo * 0.5)}} {{valuto}}</h4>
+      </md-card-content>
+      <md-button class="md-raised" ng-click="updateMem(mem)" ng-disabled = "memelektita == mem || neVolas">
+        Elekti tiun kategorion
+      </md-button>
+    </md-card>
   </div>
+  <p><input type="checkbox" ng-model="neVolas" ng-change="updateNeVolas()"> Mi ne volas membriĝi, mi volas pagi nur subtenkotizon</p>
 
   <div class="form-group col-md-12">
-    <h4 for="krome"><b>Krom la baza membrenco, vi povas havi...</b></h4>
-    <p>Vi havos tion proporcie al la tempo al kiu vi aliĝas</p>
+    <h4 for="krome"><b>Subtenaj kotizoj (aldonaj al la membreco aŭ sen tiu):</b></h4>
     <div class="checkbox"
          ng-repeat="krom in krommembrecoj">
         <label>
@@ -59,49 +98,21 @@
                  ng-change="updateEntuto();">
           <b>{{krom.nomo}}:</b> {{krom.priskribo}}
           <b>kotizo:</b>
-          <b ng-if="!tejoagxo">{{(jaroj | number:0) * krom.kotizo}}</b>
-          <b ng-if="tejoagxo">{{(jaroj | number:0) * (krom.kotizo - krom.junaRabato)}}</b>
+          <b>{{(jaroj | number:0) * krom.kotizo}}</b>
           {{valuto}}
         </label>
       </form>
     </div>
   </div>
 
-   <h2 align="center" ng-show="!novkotizo || novkotizo == entuto || memelektita != retmembreco">
+  <div class="col-md-12">
+   <h2 align="center">
       Entuto: {{entuto}} {{valuto}}
    </h2>
-
-    <h2 ng-show="(novkotizo > -1 && novkotizo != entuto && memelektita == retmembreco)" align="center">
-       Entuto: <strike>{{entuto}} {{valuto}}</strike>... {{novkotizo}} {{valuto}}
-    </h2>
-
-  <p align="center" ng-show="memelektita == retmembreco">
-     <a data-title="Enmetu kiom vi povas pagi"
-        href=""
-        editable-number = "novkotizo"
-        onaftersave = "petiRabaton($data)"
-        e-min = "0"
-        e-label="Tajpu kiom vi povas pagi:"
-        e-step = "any">
-        Se tiu monsumo estas tro alta por vi aŭ se vi povas pagi pli ol tio, klaku ĉi tie.
-    </a>
-   </p>
-
-  <div class="form-group col-md-12" ng-show="kanuto && memelektita == retmembreco">
-   <label for="komento">
-     Vi petas rabaton pli granda ol 30%. Nia organizo havas tre limigitajn
-     subvenciojn por membrado. Kial vi kredas ke vi meritas ricevi
-     subvencion por via membrado? (Danke al fondaĵo Kanuto)
-   </label>
-   <textarea class="form-control" rows="5" id="komento" ng-model="kanutkialo"></textarea>
- </div>
+  </div>
 
   <div class="form-group text-center">
-      <a ui-sref="form.prihomo" class="btn btn-outline-rounded btn-default">
-        <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span>
-        Antaŭa
-      </a>
-      <a ui-sref="form.donaci" class="btn btn-outline-rounded btn-default"> Sekva
+      <a ui-sref="form.prihomo" class="btn btn-outline-rounded btn-default" onClick="window.location.href='#!/form/prihomo'"> Sekva
         <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span>
       </a>
   </div>
