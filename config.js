@@ -1,7 +1,7 @@
 app.service('config', function($http){
   var service = this;
 
-  service.api_url = "http://localhost:3000";
+  service.api_url = "https://api.uea.org";
 
   service.getConfig = getConfig;
 
