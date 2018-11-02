@@ -6,7 +6,7 @@ angular.module('formularoj').config(function($stateProvider, $urlRouterProvider)
             url: "/form",
             templateUrl: "components/form/form.htm"
         })
-        .state("form.x", {
+        .state("form.prihomo", {
             url: "/prihomo",
             templateUrl: "components/prihomo/prihomo.htm",
             controller: "prihomoCtrl"

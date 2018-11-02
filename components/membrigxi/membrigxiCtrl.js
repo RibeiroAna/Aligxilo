@@ -10,9 +10,7 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
     if(!$rootScope.uzanto) {
       $rootScope.uzanto = {};
     }
-    if (!$rootScope.uzanto.naskigxtagoSenFormo) {
-      $rootScope.uzanto.naskigxtagoSenFormo = "19021980";
-    }
+
     if(!$rootScope.jaroj) {
       $scope.jaroj = 1;
       $rootScope.jaroj = 1;
@@ -22,16 +20,18 @@ app.controller("membrigxiCtrl", function ($scope, $rootScope, $window, config, m
       $scope.jaroj = $rootScope.jaroj;
     }
 
+    if(!$rootScope.agxo) {
+      $rootScope.agxo = 26;
+    }  
+
     $scope.updateEntuto();
   }
 
   $scope.updateAgxo = function() {
-    var nt = $rootScope.uzanto.naskigxtagoSenFormo;
-    var agxo = $scope.jaro - parseInt(nt[4] + nt[5] + nt[6] + nt[7]);
-    if(agxo <= 19) {
+    if($rootScope.agxo <= 19) {
       $rootScope.r75 = true;
       $rootScope.r50 = false;
-    } else if (agxo <= 25) {
+    } else if ($rootScope.agxo <= 25) {
       $rootScope.r75 = false;
       $rootScope.r50 = true;
     } else {

@@ -1,7 +1,6 @@
 <h3 data-ng-init="init()" class="col-md-12">Resumo de viaj mendoj</h3>
 <ul>
   <li>{{memelektita.nomo}}:
-    {{r75 && jaroj == 1 && memelektita.id == 3}}
       <b ng-if="(!r75 && !r50) || jaroj != 1 || memelektita.id != 3">{{memelektita.kotizo * (jaroj | number:0)}}</b> 
       <b ng-if="r75 && jaroj == 1 && memelektita.id == 3">{{roundUp(memelektita.kotizo * 0.25)}}</b> 
       <b ng-if="r50 && jaroj == 1 && memelektita.id == 3">{{roundUp(memelektita.kotizo * 0.5)}}</b> {{valuto}}
@@ -15,7 +14,7 @@
     Donaco: {{fondajxo.nomo}}: <b>{{fondajxo.donaco}}</b> {{valuto}}
   </li>
   <li>
-    <h4 ng-show="!novkotizo || novkotizo == entuto">
+    <h4>
       Entuto: {{entuto + entutoDonaco}} {{valuto}}
     </h4>
   </li>

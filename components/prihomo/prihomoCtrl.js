@@ -1,48 +1,10 @@
 app.controller("prihomoCtrl", function ($scope, $rootScope, $window, prihomoService) {
 
     $scope.init = function() {
-      if($rootScope.uzanto) {
-        $scope.uzanto = $rootScope.uzanto;
-      } else {
-        $scope.uzanto = {};
-      }
+      $scope.uzanto = $rootScope.uzanto;
       $scope.irita = false;
       $scope.ensalutado = false;
-      prihomoService.getLandoj().then(success, error);
     }
-
-    var success = function (response) {
-      $scope.landoj = response.data;
-      if(!$rootScope.entuto) {
-        $window.location.href = '#!/form/membrigxi';
-        $window.location.reload();
-      }
-
-      var successIpapi = function(response) {
-        var landkodo = response.data.country.toLowerCase();
-
-        prihomoService.getInfoPriLanda(landkodo).then(function(response){
-          $rootScope.landInformoj = response.data;
-        });
-
-        for(var i = 0; i < $scope.landoj.length; i++) {
-            if($scope.landoj[i].landkodo == landkodo) {
-                $scope.uzanto.lando = $scope.landoj[i];
-                $rootScope.uzanto = $scope.uzanto;
-                return;
-            }
-            $scope.uzanto.lando = $scope.landoj[i];
-            $rootScope.uzanto = $scope.uzanto;
-        }
-        };
-
-        if($rootScope.uzanto) {
-            $scope.uzanto = $rootScope.uzanto;
-        } else {
-            prihomoService.getIpapi().then(successIpapi);
-        }
-
-    };
 
     $scope.ensaluti = function() {
       $scope.msg = null;
@@ -78,6 +40,25 @@ app.controller("prihomoCtrl", function ($scope, $rootScope, $window, prihomoServ
 
       var formTraktado = function() {
         if($scope.prihomo.$valid) {
+          var nt = $rootScope.uzanto.naskigxtagoSenFormo;
+
+          if(nt) {
+            $rootScope.uzanto.naskigxtago = (nt[4] + nt[5] + nt[6] + nt[7] + "-" +
+                                            nt[2] + nt[3] + "-" + nt[0] + nt[1]).toString();
+            var timestamp = Date.parse($rootScope.uzanto.naskigxtago);
+            var minDate = new Date("1877-06-26");
+            var maxDate = new Date();
+            var naskigxtago = new Date($rootScope.uzanto.naskigxtago);
+            if(isNaN(timestamp)) {
+              $scope.prihomo.naskigxitago.$setValidity("date", false);
+            } else {
+              if((naskigxtago < minDate) || (naskigxtago > maxDate)){
+                $scope.prihomo.naskigxitago.$setValidity("date", false);
+              } else {
+                $scope.prihomo.naskigxitago.$setValidity("date", true);
+              }
+            }
+          }
           $rootScope.uzanto = $scope.uzanto;
           $window.location.href = '#!/form/donaci';
         } else {
@@ -85,17 +66,6 @@ app.controller("prihomoCtrl", function ($scope, $rootScope, $window, prihomoServ
           if ('parentIFrame' in window) {
             parentIFrame.scrollToOffset(0,0);
           }
-        }
-      }
-
-      var err = function(err) {
-        if($scope.prihomo.$valid) {
-          window.alert("Okazis ne atendita eraro! Reprovu iam!");
-          console.log(err);
-        }
-        $window.scrollTo(0, 0);
-        if ('parentIFrame' in window) {
-          parentIFrame.scrollToOffset(0,0);
         }
       }
 

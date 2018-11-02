@@ -96,6 +96,30 @@
       </div>
     </div>
 
+    <div class="col-md-12"
+        ng-class="{'has-error': (prihomo.naskigxitago.$touched || irita) && prihomo.naskigxitago.$invalid }">
+      <div class="form-group col-md-6">
+        <label>Naskiĝidato*</label>
+        <input type="text"
+                name="naskigxitago"
+                ng-blur="updateEntuto()"
+                class="form-control"
+                ng-model="uzanto.naskigxtagoSenFormo"
+                name="naskigxitago"
+                size="23"
+                placeholder="TT/MM/JJJJ"
+                ui-mask="99/99/9999" ui-mask-placeholder required ng-disabled="malkovrita">
+        <div class="help-block"
+            ng-messages="prihomo.naskigxitago.$error"
+            ng-show="prihomo.naskigxitago.$touched || irita">
+        <div ng-messages-include="config/messages.html"></div>
+      </div>
+      <div class="help-block">
+        TT/MM/JJJJ
+      </div>
+    </div>
+  </div>
+
     </div>
     <div class="col-md-12">
       <h3>Adreso</h3>

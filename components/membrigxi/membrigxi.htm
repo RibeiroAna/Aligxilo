@@ -19,30 +19,16 @@
                     ng-options="(l.radikoEo + l.finajxoEo) for l in landoj | localeOrderBy:'radikoEo'" required ng-disabled="malkovrita">
             </select>
       </div>
-      <div class="col-md-4"
-           ng-class="{'has-error': (prihomo.naskigxitago.$touched || irita) && prihomo.naskigxitago.$invalid }">
+      <div class="col-md-4">        
         <div class="form-group col-md-6">
-          <label>Naskiĝidato*</label>
-          <!-- <p>{{uzanto.naskigxtagoSenFormo[0]}}{{uzanto.naskigxtagoSenFormo[1]}}/{{uzanto.naskigxtagoSenFormo[2]}}{{uzanto.naskigxtagoSenFormo[3]}}/{{uzanto.naskigxtagoSenFormo[4]}}{{uzanto.naskigxtagoSenFormo[5]}}{{uzanto.naskigxtagoSenFormo[6]}}{{uzanto.naskigxtagoSenFormo[7]}}</p> -->
-          <input type="text"
-                  name="naskigxitago"
-                  ng-blur="updateEntuto()"
-                  class="form-control"
-                  ng-model="uzanto.naskigxtagoSenFormo"
-                  name="naskigxitago"
-                  size="23"
-                  placeholder="TT/MM/JJJJ"
-                  ui-mask="99/99/9999" ui-mask-placeholder required ng-disabled="malkovrita">
-          <div class="help-block"
-              ng-messages="prihomo.naskigxitago.$error"
-              ng-show="prihomo.naskigxitago.$touched || irita">
-          <div ng-messages-include="config/messages.html"></div>
+          <label>Aĝo*</label>
+          <select ng-model="$root.agxo" class="form-control" ng-change="updateAgxo()">
+            <option ng-value=19>19 aŭ malpli</option>
+            <option ng-value=25>Inter 20 kaj 25</option>
+            <option ng-value=26 selected>26 aŭ pli</option>
+          </select>
         </div>
-            <!--ng-hide="uzanto.naskigxtagoSenFormo || redaktiNG" -->
-            <div class="help-block">
-              TT/MM/JJJJ
-            </div>
-        </div>
+
       </div>
       <div class="col-md-4">
         <label for="gxis">Vi membriĝas por... *</label>
@@ -112,7 +98,7 @@
   </div>
 
   <div class="form-group text-center">
-      <a ui-sref="form.prihomo" class="btn btn-outline-rounded btn-default" onClick="window.location.href='#!/form/prihomo'"> Sekva
+      <a ui-sref="form.prihomo" class="btn btn-outline-rounded btn-default"> Sekva
         <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span>
       </a>
   </div>

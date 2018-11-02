@@ -94,9 +94,6 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
         }
       }
     }
-    if($rootScope.novkotizo) {
-      observo += "Petita novkotizo de la homo " + $rootScope.novkotizo;
-    }
 
      observo += "<b>Pagmaniero</b>" + $scope.pago + "<br>";
 
@@ -107,6 +104,16 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
      var data = {mesagxo: observo, temo: 'Nova aliĝpeto en UEA'};
 
      plusendiService.postMesagxi(data);
+     
+     var kvanto =  $rootScope.entuto + $rootScope.entutoDonaco;
+
+     var dataGxiro = {kialo: observo, aligxo: true, traktita: false, 
+                      valuto: $rootScope.valuto, kvanto: kvanto, 
+                      pagmaniero: $scope.pago};
+     plusendiService.postGxirpropono(dataGxiro).then(function(success){
+        $scope.datumoj.idGxirpropono = success.data.insertId;
+        $scope.registriMembrecojn();
+     });
   }
 
   var error = function (err) {
@@ -124,9 +131,9 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
       promises.push(
               plusendiService.postMembreco($rootScope.memelektita.id,
                                            $scope.datumoj));
-      if($rootScope.krommem){
-        for(var i = 0; i < $rootScope.krommem.length; i++) {
-          if($rootScope.krommem[i]) {
+      if($rootScope.krommembrecoj){
+        for(var i = 0; i < $rootScope.krommembrecoj.length; i++) {
+          if($rootScope.krommembrecoj[i].elektita) {
              promises.push(
                      plusendiService.postMembreco($rootScope.krommembrecoj[i].id,
                                                   $scope.datumoj));
@@ -137,7 +144,7 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
      $q.all(promises).then(function(success) {
          window.alert("Dankon, via aliĝo estis registrita");
          $window.location.href = '#!/form/membrigxi';
-         $window.location.reload();
+         window.location.reload()
       }, error);
   }
 
@@ -146,26 +153,20 @@ app.controller("plusendiCtrl", function ($scope, $rootScope, $q, $window,
   }
 
   $scope.plusendi = function() {
-    //Kreas uzanton kaze ĝi ne ekzistas
     if($scope.pagmaniero.$valid) {
       console.log($rootScope.uzanto);
       if(!$rootScope.uzanto.id) {
         $rootScope.uzanto.uzantnomo =  $rootScope.uzanto.retposxto;
         $rootScope.uzanto.idLando = $rootScope.uzanto.lando.id;
-
-          var success = function (response) {
-              $rootScope.uzanto.id = response.data.id;
-              $scope.datumoj.idAno = response.data.id;
-              $scope.financajObservoj();
-              $scope.registriMembrecojn();
-          };
-
-          plusendiService.postUzanto($rootScope.uzanto).then(success, error);
-
+        var success = function (response) {
+            $rootScope.uzanto.id = response.data.id;
+            $scope.datumoj.idAno = response.data.id;
+            $scope.financajObservoj();
+        };
+        plusendiService.postUzanto($rootScope.uzanto).then(success, error);
       } else {
         $scope.datumoj.idAno = $rootScope.uzanto.id;
         $scope.financajObservoj();
-        $scope.registriMembrecojn();
       }
     }
 }

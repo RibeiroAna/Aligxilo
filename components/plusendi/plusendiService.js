@@ -24,7 +24,7 @@ app.service('plusendiService', function ($http, config) {
     }
 
     function postGxirpropono (data) {
-
+        return $http.post(config.api_url + '/gxirpropono', data);
     }
 
     return service;
